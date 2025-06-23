@@ -1,6 +1,6 @@
 // mvp功能
 // 匯入本地 JS 檔
-import askGodData from "../data/info/AsakusaFortuneTelling.js";
+import askGodData from "../Data/info/AsakusaFortuneTelling.js";
 const data = askGodData();
 
 // 取得淺草100籤資料

@@ -1,7 +1,7 @@
 // mvp功能
 // 匯入區
 import { buildApi } from "../Library/tool.js";
-import getApiList from "../data/info/apiList.js";
+import getApiList from "../Data/info/apiList.js";
 
 const apiList = getApiList();
 // console.log(apiList);
