@@ -5,7 +5,8 @@
 
 ## 🤖加入好友
 
-https://lin.ee/oSR8odz
+- 點連結加入好友
+  https://line.me/R/ti/p/@142cmsyc
 
 ---
 
