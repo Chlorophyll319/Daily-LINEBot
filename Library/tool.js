@@ -1,5 +1,5 @@
 import axios from "axios";
-import getApiList from "../data/info/apiList.js";
+import getApiList from "../Data/info/apiList.js";
 const apiList = getApiList();
 
 /**
