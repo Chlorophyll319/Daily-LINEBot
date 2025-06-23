@@ -3,7 +3,7 @@ console.log("[index.js] 程式開始執行");
 import linebot from "linebot";
 import { Aweek } from "./Module/miniBot-weather.js";
 import * as weatherTool from "./Library/weatherTool.js";
-import * as weatherApi from "./api/weatherApi.js";
+import * as weatherApi from "./Api/weatherApi.js";
 // console.log(weatherTool);
 // import sheetDB from "./friends/sheetDB.js";
 // console.log(sheetDB);
