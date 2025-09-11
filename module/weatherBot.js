@@ -6,7 +6,7 @@ import {
 } from "../library/WeatherError.js";
 import mongoDB from "../database/mongoDB.js";
 
-console.log("🤖 新版天氣機器人模組啟動中... 這次是簡潔版本！ ✨");
+console.log("🤖 新版天氣機器人模組啟動中... 這次是簡潔版本！ ✨ (更新版)");
 
 /**
  * 一週天氣預報主功能 - 重構後的簡潔版本
