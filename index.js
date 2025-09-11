@@ -85,14 +85,15 @@ process.on("SIGTERM", async () => {
   process.exit(0);
 });
 
-// 啟動 Bot
-bot.listen("/", 3000, () => {
+// 啟動 Bot - 動態端口避免衝突
+const PORT = process.env.PORT || 8080;
+bot.listen("/", PORT, () => {
   console.log("🎉 黛栗天氣機器人已啟動！");
   console.log("🌟 新版本特色：");
   console.log("   ✨ MongoDB 整合完成");
   console.log("   🚀 程式碼大幅簡化");
   console.log("   🎯 支援個人化城市設定");
   console.log("   😄 保留有趣的 console.log");
-  console.log("📍 服務位址：localhost:3000");
+  console.log(`📍 服務位址：localhost:${PORT}`);
   console.log("🤖 準備為好朋友們提供天氣服務！ ٩(◕‿◕)۶");
 });

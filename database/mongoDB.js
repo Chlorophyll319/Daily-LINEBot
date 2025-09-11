@@ -1,20 +1,23 @@
-import { MongoClient } from "mongodb";
 import "dotenv/config";
+import mongoose from "mongoose";
+import User from "./user.js";
 
 console.log("🍃 MongoDB 連接模組載入中... 希望資料庫今天心情不錯 (´∀｀)");
 
-const client = new MongoClient(process.env.MONGODB_URI);
-let db = null;
+class MongoDB {
+  constructor() {
+    this.isConnected = false;
+  }
 
-/**
- * 連接到 MongoDB 資料庫
- * 只連接一次，之後重複使用同一個連接
- */
-async function connectDB() {
-  if (!db) {
+  async connectDB() {
+    if (this.isConnected) {
+      console.log("🔄 資料庫已連線，跳過重複連線");
+      return;
+    }
+
     try {
-      await client.connect();
-      db = client.db("dailyBot");
+      await mongoose.connect(process.env.MONGODB_URI || process.env.DB_URL);
+      this.isConnected = true;
       console.log(
         "✨ MongoDB 連接成功！資料庫準備就緒，可以開始儲存好朋友的資料了 ٩(◕‿◕)۶"
       );
@@ -23,82 +26,104 @@ async function connectDB() {
       throw error;
     }
   }
-  return db;
-}
 
-/**
- * 取得使用者資料
- * @param {string} userId LINE 使用者 ID
- * @returns {Promise<Object|null>} 使用者資料或 null
- */
-async function getUserData(userId) {
-  try {
-    const database = await connectDB();
-    const users = database.collection("users");
-    const user = await users.findOne({ userId });
+  async getUserData(userId) {
+    try {
+      const user = await User.findOne({ userId });
 
-    if (user) {
-      console.log(
-        `🎯 找到熟悉的朋友！${userId} 的預設城市是 ${user.defaultCity}`
+      if (user) {
+        console.log(`🎯 找到熟悉的朋友！${userId} 的預設城市是 ${user.city}`);
+      } else {
+        console.log(`🆕 新朋友！${userId} 還沒設定預設城市呢~`);
+      }
+
+      return user;
+    } catch (error) {
+      console.error("🐛 取得使用者資料時發生錯誤：", error.message);
+      return null;
+    }
+  }
+
+  async saveUserData(userId, city) {
+    try {
+      const result = await User.findOneAndUpdate(
+        { userId },
+        { userId, city },
+        { upsert: true, new: true, runValidators: true }
       );
-    } else {
-      console.log(`🆕 新朋友！${userId} 還沒設定預設城市呢~`);
+
+      const isNewUser = !(await User.findOne({
+        userId,
+        createdAt: { $lt: result.createdAt },
+      }));
+
+      if (isNewUser) {
+        console.log(`🎊 歡迎新朋友！幫 ${userId} 設定預設城市為 ${city}`);
+      } else {
+        console.log(`📝 更新成功！${userId} 的預設城市改為 ${city}`);
+      }
+
+      return result;
+    } catch (error) {
+      console.error("💥 儲存使用者資料時發生錯誤：", error.message);
+      throw error;
     }
-
-    return user;
-  } catch (error) {
-    console.error("🐛 取得使用者資料時發生錯誤：", error.message);
-    return null;
   }
-}
 
-/**
- * 儲存或更新使用者資料
- * @param {string} userId LINE 使用者 ID
- * @param {string} defaultCity 預設城市
- */
-async function saveUserData(userId, defaultCity) {
-  try {
-    const database = await connectDB();
-    const users = database.collection("users");
+  async closeDB() {
+    try {
+      if (!this.isConnected) return;
 
-    const result = await users.updateOne(
-      { userId },
-      {
-        $set: {
-          userId,
-          defaultCity,
-          updatedAt: new Date(),
-        },
-      },
-      { upsert: true }
-    );
-
-    if (result.upsertedCount > 0) {
-      console.log(`🎊 歡迎新朋友！幫 ${userId} 設定預設城市為 ${defaultCity}`);
-    } else {
-      console.log(`📝 更新成功！${userId} 的預設城市改為 ${defaultCity}`);
+      await mongoose.connection.close();
+      this.isConnected = false;
+      console.log("👋 MongoDB 連接已關閉，資料庫說再見～");
+    } catch (error) {
+      console.error("💥 關閉資料庫連接時發生錯誤：", error.message);
     }
+  }
 
-    return result;
-  } catch (error) {
-    console.error("💥 儲存使用者資料時發生錯誤：", error.message);
-    throw error;
+  async createUser(userData) {
+    try {
+      const user = new User(userData);
+      await user.save();
+      console.log(`✨ 用戶已創建：${userData.userId}`);
+      return user;
+    } catch (error) {
+      if (error.code === 11000) {
+        throw new Error("用戶ID已存在");
+      }
+      throw error;
+    }
+  }
+
+  async findAllUsers() {
+    try {
+      const users = await User.find().sort({ createdAt: -1 });
+      console.log(`📋 查詢到 ${users.length} 個用戶`);
+      return users;
+    } catch (error) {
+      console.error("💥 查詢所有用戶失敗：", error.message);
+      throw error;
+    }
+  }
+
+  async deleteUser(userId) {
+    try {
+      const user = await User.findOneAndDelete({ userId });
+
+      if (!user) {
+        throw new Error("找不到用戶");
+      }
+
+      console.log(`🗑️ 用戶已刪除：${userId}`);
+      return user;
+    } catch (error) {
+      console.error("💥 刪除用戶失敗：", error.message);
+      throw error;
+    }
   }
 }
 
-/**
- * 關閉資料庫連接
- */
-async function closeDB() {
-  if (client) {
-    await client.close();
-    console.log("👋 MongoDB 連接已關閉，資料庫說再見～");
-  }
-}
+const mongoDB = new MongoDB();
 
-export default {
-  getUserData,
-  saveUserData,
-  closeDB,
-};
+export default mongoDB;
