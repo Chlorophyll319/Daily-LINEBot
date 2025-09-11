@@ -1,10 +1,10 @@
 console.log(
-  "🛠️ Linus 認證的錯誤處理系統載入中... 統一天下的錯誤處理！ (｡◕‿◕｡)"
+  "🛠️ 優雅的錯誤處理系統載入中... 統一天下的錯誤處理！ (｡◕‿◕｡)"
 );
 
 /**
  * 天氣機器人專用錯誤類別
- * Linus 式統一錯誤處理 - 一個地方處理所有錯誤！
+ * 統一錯誤處理 - 一個地方處理所有錯誤！
  */
 export class WeatherError extends Error {
   constructor(message, code = "WEATHER_ERROR", originalError = null) {
@@ -22,7 +22,7 @@ export class WeatherError extends Error {
 }
 
 /**
- * 錯誤代碼常數 - Linus 最愛的常數定義！
+ * 錯誤代碼常數 - 優雅的常數定義！
  */
 export const ERROR_CODES = {
   API_ERROR: "API_ERROR", // API 呼叫失敗
@@ -33,7 +33,7 @@ export const ERROR_CODES = {
 };
 
 /**
- * 統一錯誤處理器 - 一個地方處理所有錯誤，Linus 認可！
+ * 統一錯誤處理器 - 一個地方處理所有錯誤！
  * @param {Error} error 錯誤物件
  * @returns {string} 給使用者看的友善訊息
  */
@@ -95,4 +95,4 @@ export const createWeatherError = {
     ),
 };
 
-console.log("✅ 統一錯誤處理系統載入完成！Linus 表示：這才是專業的錯誤處理 💪");
+console.log("✅ 統一錯誤處理系統載入完成！這才是專業的錯誤處理 💪");

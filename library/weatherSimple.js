@@ -1,8 +1,8 @@
 import { cityIndex } from "../data/info/weatherApiCityIndex.js";
 
-console.log("☀️ 簡潔版天氣工具載入中... Linus 會為這個感到驕傲的 (｡◕‿◕｡)");
+console.log("☀️ 簡潔版天氣工具載入中... 這個設計真棒 (｡◕‿◕｡)");
 
-// Linus 認證的天氣元素索引常數 - 消除硬編碼！
+// 天氣元素索引常數 - 消除硬編碼！
 const WEATHER_ELEMENTS = {
   WEATHER: 0, // Wx 天氣現象
   MAX_TEMP: 1, // MaxT 最高溫度
@@ -10,7 +10,7 @@ const WEATHER_ELEMENTS = {
 };
 
 /**
- * 獲取天氣預報 - Linus 認可的簡潔版本
+ * 獲取天氣預報 - 簡潔版本
  * 直接從原始資料產生可讀的天氣預報，沒有多餘的轉換
  *
  * @param {Object} rawWeatherData API 原始資料
@@ -101,7 +101,7 @@ function formatWeatherReport(cityData, days) {
 
   report += "✨ 天氣預報製作完成！願你每天都有好天氣～ (◕‿◕)♡";
 
-  console.log("🏆 格式化完成！這次的程式碼 Linus 一定滿意");
+  console.log("🏆 格式化完成！程式碼品質很棒");
   return report;
 }
 

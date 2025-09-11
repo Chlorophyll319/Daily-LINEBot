@@ -7,7 +7,7 @@ console.log(
 
 const apiList = getApiList();
 
-// Linus 認證的常數定義 - 消除魔法數字！
+// 常數定義 - 消除魔法數字！
 const API_INDICES = {
   // 天氣預報相關
   WEEKLY_FORECAST: 31, // 一週各縣市預報
@@ -31,7 +31,7 @@ const API_INDICES = {
 
 /**
  * 通用 API 呼叫函數 - 取代原本32個重複的函數
- * Linus 最愛的 DRY (Don't Repeat Yourself) 原則
+ * DRY (Don't Repeat Yourself) 原則
  *
  * @param {string} apiName API 名稱，例如："天氣預報"
  * @param {number} index API 索引
@@ -122,7 +122,7 @@ export async function getHeatIndex() {
 export async function getCityHelper(cityName) {
   console.log(`🏙️ 正在取得 ${cityName} 小幫手資料... 每個城市都有專屬服務員！`);
 
-  // 城市對應索引映射 - 使用定義好的常數，Linus 會很滿意 ✨
+  // 城市對應索引映射 - 使用定義好的常數 ✨
   const cityApiMap = {
     台北: API_INDICES.TAIPEI_HELPER,
     新北: API_INDICES.NEW_TAIPEI_HELPER,

@@ -1,5 +1,5 @@
 import "dotenv/config";
-console.log("🌟 黛栗天氣機器人啟動中... 新版本來了！Linus 表示很滿意 ٩(◕‿◕)۶");
+console.log("🌟 黛栗天氣機器人啟動中... 新版本來了！設計真棒 ٩(◕‿◕)۶");
 
 import linebot from "linebot";
 import {
@@ -23,7 +23,7 @@ console.log("🤖 LINE Bot 設定完成！準備監聽訊息...");
 // 監聽訊息事件 - 重構後的簡潔版本
 bot.on("message", async (event) => {
   try {
-    // 修正變數命名問題 - Linus 的第一個要求
+    // 修正變數命名問題 - 統一變數命名
     const userMessage = event.message.text;
     const userId = event.source.userId; // 統一使用 userId
 
