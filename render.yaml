@@ -2,7 +2,7 @@ services:
   - type: web
     name: daily-linebot
     env: node
-    rootDirectory: .
+    rootDirectory: src
     buildCommand: npm install
     startCommand: node index.js
     envVars:
