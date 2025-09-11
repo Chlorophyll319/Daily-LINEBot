@@ -1,9 +1,9 @@
-import { getWeatherReport } from "../library/weatherSimple.js";
-import { getWeeklyForecast } from "../api/weatherApi.js";
+import { getWeatherReport } from "../Library/weatherSimple.js";
+import { getWeeklyForecast } from "../Api/weatherApi.js";
 import {
   handleWeatherError,
   createWeatherError,
-} from "../library/WeatherError.js";
+} from "../Library/WeatherError.js";
 import mongoDB from "../database/mongoDB.js";
 
 console.log("🤖 新版天氣機器人模組啟動中... 這次是簡潔版本！ ✨");
