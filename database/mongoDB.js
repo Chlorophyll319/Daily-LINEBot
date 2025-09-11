@@ -52,17 +52,7 @@ class MongoDB {
         { upsert: true, new: true, runValidators: true }
       );
 
-      const isNewUser = !(await User.findOne({
-        userId,
-        createdAt: { $lt: result.createdAt },
-      }));
-
-      if (isNewUser) {
-        console.log(`🎊 歡迎新朋友！幫 ${userId} 設定預設城市為 ${city}`);
-      } else {
-        console.log(`📝 更新成功！${userId} 的預設城市改為 ${city}`);
-      }
-
+      console.log(`📝 ${userId} 的預設城市已設定為 ${city}`);
       return result;
     } catch (error) {
       console.error("💥 儲存使用者資料時發生錯誤：", error.message);
@@ -79,47 +69,6 @@ class MongoDB {
       console.log("👋 MongoDB 連接已關閉，資料庫說再見～");
     } catch (error) {
       console.error("💥 關閉資料庫連接時發生錯誤：", error.message);
-    }
-  }
-
-  async createUser(userData) {
-    try {
-      const user = new User(userData);
-      await user.save();
-      console.log(`✨ 用戶已創建：${userData.userId}`);
-      return user;
-    } catch (error) {
-      if (error.code === 11000) {
-        throw new Error("用戶ID已存在");
-      }
-      throw error;
-    }
-  }
-
-  async findAllUsers() {
-    try {
-      const users = await User.find().sort({ createdAt: -1 });
-      console.log(`📋 查詢到 ${users.length} 個用戶`);
-      return users;
-    } catch (error) {
-      console.error("💥 查詢所有用戶失敗：", error.message);
-      throw error;
-    }
-  }
-
-  async deleteUser(userId) {
-    try {
-      const user = await User.findOneAndDelete({ userId });
-
-      if (!user) {
-        throw new Error("找不到用戶");
-      }
-
-      console.log(`🗑️ 用戶已刪除：${userId}`);
-      return user;
-    } catch (error) {
-      console.error("💥 刪除用戶失敗：", error.message);
-      throw error;
     }
   }
 }

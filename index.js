@@ -6,7 +6,7 @@ import {
   weeklyWeather,
   setUserCity,
   parseCityCommand,
-} from "./Module/weatherBot.js";
+} from "./module/weatherBot.js";
 import mongoDB from "./database/mongoDB.js";
 
 console.log("📦 所有模組載入完成！準備開始為好朋友們服務～");
