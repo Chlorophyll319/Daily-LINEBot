@@ -1,0 +1,215 @@
+  "01": 
+    official: "晴天",
+    description: "全天無雲，日照強烈，氣溫偏高",
+    category: "sunny",
+
+  "02": 
+    official: "晴時多雲",
+    description: "以晴天為主，偶有雲層遮蔽，仍屬晴朗",
+    category: "sunny",
+
+  "03": 
+    official: "多雲時晴",
+    description: "雲量略多，但仍可見陽光，偏向多雲",
+    category: "cloudy",
+
+  "04": 
+    official: "多雲",
+    description: "雲量中等，天氣穩定無降雨，光線稍弱",
+    category: "cloudy",
+
+  "05": 
+    official: "多雲時陰",
+    description: "雲層偏多，光線變弱，接近陰天狀態",
+    category: "cloudy",
+
+  "06": 
+    official: "陰時多雲",
+    description: "大致陰天，偶有雲縫透光，日照稀少",
+    category: "cloudy",
+
+  "07": 
+    official: "陰天",
+    description: "全天雲層厚重，幾乎無陽光，天色昏暗",
+    category: "overcast",
+
+  "08": 
+    official: "多雲陣雨",
+    description: "以多雲為主，偶爾出現短暫降雨，常見於午後或局部地區",
+    category: "rainy",
+
+  "09": 
+    official: "多雲時陰短暫雨",
+    aliases: ["多雲時陰短暫雨", "多雲時陰短暫陣雨"],
+    description: "雲量大、日照弱，偶有降雨，雨勢通常不強但較廣泛",
+    category: "rainy-overcast",
+
+  10: 
+    official: "陰時多雲短暫雨",
+    description: "以陰天為主，氣壓低、濕度高，容易有短暫性小雨或陣雨",
+    category: "rainy-overcast",
+
+  11: 
+    official: "雨天",
+    description: "晴或陰天為主，午後可能轉為短暫性降雨，含穩定或局部降雨情況",
+    category: "rainy",
+
+  12: 
+    official: "多雲或晴間多雲陣雨",
+    description: "以多雲或晴間多雲為主，降雨較明顯且範圍可能較廣",
+    category: "rainy",
+
+  13: 
+    official: "陰時多雲有雨",
+    description: "偏陰天氣，長時間雲層厚，可能有持續性小雨或間歇陣雨",
+    category: "rainy-overcast",
+
+  14: 
+    official: "陰有雨／陣雨",
+    description: "陰天為主，並有穩定或間歇性降雨，可能從白天持續到傍晚",
+    category: "rainy-overcast",
+
+  15: 
+    official: "多雲 + 陣雨或雷雨",
+    description:
+      "以多雲天氣為主，並可能有突發性陣雨或雷陣雨，通常發生於午後或局部地區",
+    category: "rain-thunder",
+
+  16: 
+    official: "多雲時陰 + 陣雨或雷雨",
+    description: "天氣偏陰且多雲，並可能伴隨陣雨或雷陣雨，為不穩定天氣狀態",
+    category: "rain-thunder",
+
+  17: 
+    official: "陰時多雲 + 雷陣雨",
+    description: "以陰天為主，雲層厚重，局部可能出現雷陣雨，日照極少",
+    category: "rain-thunder",
+
+  18: 
+    official: "陰 + 陣雨或雷雨",
+    description: "屬於典型濕冷型陰雨雷天氣，容易降雨並伴隨雷擊，戶外活動需注意",
+    category: "rain-thunder",
+
+  19: 
+    official: "晴午後多雲 + 局部/短暫性降雨",
+    description:
+      "以晴朗天氣起始，午後可能轉多雲並有局部、短暫性小雨，氣溫變化大",
+    category: "sunny-rain",
+
+  20: 
+    official: "多雲午後 + 局部／短暫性降雨",
+    description: "午後期間由多雲轉變並可能出現局部性或短暫性小雨，雨勢通常溫和",
+    category: "sunny-rain",
+
+  21: 
+    official: "晴午後 + 陣雨或雷雨",
+    description:
+      "晴朗天氣在午後轉變，可能出現局部性短暫陣雨或雷陣雨，氣候轉變快速",
+    category: "sunny-thunder",
+
+  22: 
+    official: "多雲午後 + 陣雨或雷雨",
+    description: "多雲天氣於午後易發展出局部雷陣雨或短時強降雨，需留意天氣突變",
+    category: "rain-thunder",
+
+  23: 
+    official: "雨或雪／短暫雪",
+    description: "天氣不穩定，降雨或降雪交替出現，常發生於冬季鋒面過境時",
+    category: "rain-snow",
+
+  24: 
+    official: "晴 + 霧／晨霧",
+    description: "晴朗但濕度高，清晨可能有霧氣，能見度受影響",
+    category: "fog",
+
+  25: 
+    official: "晴時多雲 + 霧／晨霧",
+    description: "雲量較多的晴天，早晨易有霧氣形成",
+    category: "fog",
+
+  26: 
+    official: "多雲時晴 + 霧／晨霧",
+    aliases: ["多雲時晴有霧", "多雲時晴晨霧"],
+    category: "fog",
+
+  27: 
+    official: "多雲 + 霧／晨霧",
+    aliases: ["多雲有霧", "多雲晨霧", "有霧", "晨霧"],
+    category: "fog",
+
+  28: 
+    official: "陰天 + 霧／晨霧",
+    description: "陰天環境中出現霧氣，易導致全天低能見度，濕冷天氣常見",
+    category: "fog",
+
+  29: 
+    official: "多雲 + 局部／短暫性降雨",
+    description: "以多雲為主，出現局部短暫性降雨，通常時間不長、影響範圍小",
+    category: "cloudy-rain",
+
+  30: 
+    official: "陰或多雲局部／短暫性降雨",
+    description: "陰天或多雲時有局部性、短暫性降雨，降雨時間不定且範圍有限",
+    category: "cloudy-rain",
+
+  31: 
+    official: "多雲 + 霧 + 局部／短暫性降雨",
+    description:
+      "多雲天氣中夾雜霧氣，並伴隨局部性或短暫性降雨，易在早晨與午後變化時發生",
+    category: "fog-rain",
+
+  32: 
+    official: "多雲或陰天 + 霧 + 降雨變化型",
+    description:
+      "天氣以多雲或陰天為主，霧氣與局部／短暫性降雨交錯出現，早晨與午後皆可能發生視線不良與雨勢變化",
+    category: "fog-rain",
+
+  33: 
+    official: "多雲 + 局部雷陣雨變化型",
+    description:
+      "以多雲為主，局部地區可能出現雷陣雨，屬於典型午後對流型降雨，強度與範圍變化大",
+    category: "local-thunder",
+
+  34: 
+    official: "陰／多雲時陰 + 局部雷陣雨變化型",
+    description:
+      "以陰天或多雲時陰為主，午後或局部地區可能出現短暫雷陣雨，屬不穩定濕熱氣流常見現象",
+    category: "local-thunder",
+
+  35: 
+    official: "多雲 + 陣雨／雷雨 + 霧",
+    description:
+      "多雲天氣搭配雷陣雨或間歇性強降雨，並伴隨霧氣，常見於對流活躍或鋒面接近時的早晨或傍晚",
+    category: "fog-thunder",
+
+  36: 
+    official: "陰或多雲時陰 + 陣雨／雷雨 + 霧",
+    description:
+      "陰天或多雲時陰的天氣下出現霧氣，並伴有雷陣雨或短時強降雨，為能見度差且濕度高的高風險天候",
+    category: "fog-thunder",
+
+  37: 
+    official: "局部雨或雪 + 霧",
+    description:
+      "局部地區有雨或雪並伴隨霧氣，常見於寒流或鋒面過境時的低溫高濕天氣",
+    category: "fog-rain-snow",
+
+  38: 
+    official: "短暫雨／陣雨 + 霧",
+    description: "短時降雨或陣雨與霧同時發生，視線不佳且濕度高，多發生於早晨",
+    category: "fog-rain",
+
+  39: 
+    official: "穩定雨或陣雨 + 霧",
+    description: "穩定性降雨與霧共存，濕冷天氣中能見度與活動安全需特別留意",
+    category: "fog-rain",
+
+  41: 
+    official: "陣雨或雷雨 + 霧",
+    description: "不穩定雷雨與霧同時發生，常見於濕熱對流天氣，氣候變化劇烈",
+    category: "fog-thunder",
+
+  42: 
+    official: "雪／積冰／暴風雪",
+    description: "冬季嚴寒天氣，伴隨強降雪或結冰現象，需注意路面濕滑與行車安全",
+    category: "snow-extreme",

@@ -1,142 +1,182 @@
-// mvp功能
-// 匯入區
-import { buildApi } from "../Library/tool.js";
-import getApiList from "../Data/info/apiList.js";
+import axios from "axios";
+import getApiList from "../data/info/apiList.js";
+
+console.log(
+  "🌐 簡潔版天氣 API 模組啟動中... 不再需要32個包裝函數了！ヽ(°〇°)ﾉ"
+);
 
 const apiList = getApiList();
-// 測試用
-// console.log(apiList);
 
-const Name = "天氣預報";
+// Linus 認證的常數定義 - 消除魔法數字！
+const API_INDICES = {
+  // 天氣預報相關
+  WEEKLY_FORECAST: 31, // 一週各縣市預報
+  THREE_DAY_FORECAST: 1, // 全台3天天氣預報
+  CURRENT_WEATHER: 4, // 現在天氣觀測報告
+  WEATHER_ALERT: 3, // 天氣特報
+  RAIN_OBSERVATION: 6, // 雨量觀測資料
+  HEAT_INDEX: 7, // 熱傷害指數預報
 
-export const 全台1W平均 = buildApi(Name, 0);
-// 測試用
-// console.log("全台1W平均");
+  // 城市小幫手 API 索引
+  TAIPEI_HELPER: 14,
+  NEW_TAIPEI_HELPER: 22,
+  TAOYUAN_HELPER: 16,
+  TAICHUNG_HELPER: 27,
+  TAINAN_HELPER: 25,
+  KAOHSIUNG_HELPER: 23,
+  HSINCHU_HELPER: 17,
+  CHANGHUA_HELPER: 19,
+  YUNLIN_HELPER: 20,
+};
 
-export const 全台3D天氣預報 = buildApi(Name, 1);
-// 測試用
-// console.log("全台3D天氣預報");
+/**
+ * 通用 API 呼叫函數 - 取代原本32個重複的函數
+ * Linus 最愛的 DRY (Don't Repeat Yourself) 原則
+ *
+ * @param {string} apiName API 名稱，例如："天氣預報"
+ * @param {number} index API 索引
+ * @returns {Promise<Object|null>} API 資料或 null
+ */
+async function callWeatherApi(apiName, index) {
+  console.log(
+    `🚀 準備呼叫 ${apiName} API (索引: ${index})... 希望氣象局今天不塞車`
+  );
 
-export const 臺北3D天氣預報 = buildApi(Name, 2);
-// 測試用
-// console.log("臺北3D天氣預報");
+  try {
+    const apiGroup = apiList[apiName];
+    if (!apiGroup || !apiGroup[index]) {
+      console.error(
+        `💔 找不到 ${apiName}[${index}] 這支 API... 可能是我記錯了？`
+      );
+      return null;
+    }
 
-export const 天氣警報 = buildApi(Name, 3);
-// 測試用
-// console.log("天氣警報");
+    const { url, apiName: apiDisplayName } = apiGroup[index];
+    console.log(`📡 正在呼叫 ${apiDisplayName}...`);
 
-export const 現在天氣 = buildApi(Name, 4);
-// 測試用
-// console.log("現在天氣");
+    const response = await axios.get(url);
 
-export const 今明36H天氣預報 = buildApi(Name, 5);
-// 測試用
-// console.log("今明36H天氣預報");
+    console.log(
+      `✨ ${apiDisplayName} API 呼叫成功！收到 ${JSON.stringify(response.data).length} 字元的資料`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(`🐛 API 呼叫失敗，氣象局可能在休息：${error.message}`);
+    return null;
+  }
+}
 
-export const 雨量觀測 = buildApi(Name, 6);
-// 測試用
-// console.log("雨量觀測");
+/**
+ * 取得一週天氣預報 - 最常用的功能
+ * 直接包裝成容易使用的函數
+ */
+export async function getWeeklyForecast() {
+  console.log("📅 正在取得一週天氣預報... 準備好迎接七天的天氣冒險！");
+  return await callWeatherApi("天氣預報", API_INDICES.WEEKLY_FORECAST);
+}
 
-export const 熱傷害5D = buildApi(Name, 7);
-// 測試用
-// console.log("熱傷害5D");
+/**
+ * 取得3天天氣預報
+ */
+export async function getThreeDayForecast() {
+  console.log("📅 正在取得三天天氣預報... 短期規劃最重要！");
+  return await callWeatherApi("天氣預報", API_INDICES.THREE_DAY_FORECAST);
+}
 
-export const 冷傷害5D = buildApi(Name, 8);
-// 測試用
-// console.log("冷傷害5D");
+/**
+ * 取得現在天氣觀測報告
+ */
+export async function getCurrentWeather() {
+  console.log("🌤️ 正在取得現在天氣觀測報告... 看看外面現在怎麼樣！");
+  return await callWeatherApi("天氣預報", API_INDICES.CURRENT_WEATHER);
+}
 
-export const 冷傷害72H = buildApi(Name, 9);
-// 測試用
-// console.log("冷傷害72H");
+/**
+ * 取得天氣特報/警報
+ */
+export async function getWeatherAlert() {
+  console.log("⚠️ 正在取得天氣特報... 有沒有需要注意的事情？");
+  return await callWeatherApi("天氣預報", API_INDICES.WEATHER_ALERT);
+}
 
-export const 溫差提醒5D = buildApi(Name, 10);
-// 測試用
-// console.log("溫差提醒5D");
+/**
+ * 取得雨量觀測資料
+ */
+export async function getRainObservation() {
+  console.log("🌧️ 正在取得雨量觀測資料... 今天會下雨嗎？");
+  return await callWeatherApi("天氣預報", API_INDICES.RAIN_OBSERVATION);
+}
 
-export const 溫差提醒72H = buildApi(Name, 11);
-// 測試用
-// console.log("溫差提醒72H");
+/**
+ * 取得熱傷害指數預報
+ */
+export async function getHeatIndex() {
+  console.log("🔥 正在取得熱傷害指數預報... 今天會不會熱死人？");
+  return await callWeatherApi("天氣預報", API_INDICES.HEAT_INDEX);
+}
 
-export const 自動氣象站 = buildApi(Name, 12);
-// 測試用
-// console.log("自動氣象站");
+/**
+ * 取得特定城市小幫手資料
+ * @param {string} cityName 城市名稱，例如："台北"、"新北"
+ */
+export async function getCityHelper(cityName) {
+  console.log(`🏙️ 正在取得 ${cityName} 小幫手資料... 每個城市都有專屬服務員！`);
 
-export const 大區域7D = buildApi(Name, 13);
-// 測試用
-// console.log("大區域7D");
+  // 城市對應索引映射 - 使用定義好的常數，Linus 會很滿意 ✨
+  const cityApiMap = {
+    台北: API_INDICES.TAIPEI_HELPER,
+    新北: API_INDICES.NEW_TAIPEI_HELPER,
+    桃園: API_INDICES.TAOYUAN_HELPER,
+    台中: API_INDICES.TAICHUNG_HELPER,
+    台南: API_INDICES.TAINAN_HELPER,
+    高雄: API_INDICES.KAOHSIUNG_HELPER,
+    新竹: API_INDICES.HSINCHU_HELPER,
+    彰化: API_INDICES.CHANGHUA_HELPER,
+    雲林: API_INDICES.YUNLIN_HELPER,
+  };
 
-export const 台北小幫手 = buildApi(Name, 14);
-// 測試用
-// console.log("台北小幫手");
+  const apiIndex = cityApiMap[cityName];
+  if (!apiIndex) {
+    console.log(`😅 ${cityName} 還沒有專屬小幫手，改用台北小幫手代班`);
+    return await callWeatherApi("天氣預報", API_INDICES.TAIPEI_HELPER);
+  }
 
-export const 花蓮小幫手 = buildApi(Name, 15);
-// 測試用
-// console.log("花蓮小幫手");
+  return await callWeatherApi("天氣預報", apiIndex);
+}
 
-export const 桃園小幫手 = buildApi(Name, 16);
-// 測試用
-// console.log("桃園小幫手");
+/**
+ * 根據天氣類型取得相應資料
+ * @param {string} weatherType 天氣類型："weekly", "3day", "current", "alert", "rain", "heat"
+ */
+export async function getWeatherByType(weatherType = "weekly") {
+  console.log(`🎯 正在根據類型 "${weatherType}" 取得天氣資料...`);
 
-export const 新竹小幫手 = buildApi(Name, 17);
-// 測試用
-// console.log("新竹小幫手");
+  switch (weatherType.toLowerCase()) {
+    case "weekly":
+    case "week":
+      return await getWeeklyForecast();
+    case "3day":
+    case "three":
+      return await getThreeDayForecast();
+    case "current":
+    case "now":
+      return await getCurrentWeather();
+    case "alert":
+    case "warning":
+      return await getWeatherAlert();
+    case "rain":
+      return await getRainObservation();
+    case "heat":
+      return await getHeatIndex();
+    default:
+      console.log(`😅 不認識的天氣類型 "${weatherType}"，給你一週預報`);
+      return await getWeeklyForecast();
+  }
+}
 
-export const 屏東小幫手 = buildApi(Name, 18);
-// 測試用
-// console.log("屏東小幫手");
+console.log(
+  "✅ 簡潔版天氣 API 模組載入完成！從32個函數進化成更強大的模組化設計 🎉"
+);
 
-export const 彰化小幫手 = buildApi(Name, 19);
-// 測試用
-// console.log("彰化小幫手");
-
-export const 雲林小幫手 = buildApi(Name, 20);
-// 測試用
-// console.log("雲林小幫手");
-
-export const 連江小幫手 = buildApi(Name, 21);
-// 測試用
-// console.log("連江小幫手");
-
-export const 新北小幫手 = buildApi(Name, 22);
-// 測試用
-// console.log("新北小幫手");
-
-export const 高雄小幫手 = buildApi(Name, 23);
-// 測試用
-// console.log("高雄小幫手");
-
-export const 金門小幫手 = buildApi(Name, 24);
-// 測試用
-// console.log("金門小幫手");
-
-export const 嘉義小幫手 = buildApi(Name, 25);
-// 測試用
-// console.log("嘉義小幫手");
-
-export const 苗栗小幫手 = buildApi(Name, 26);
-// 測試用
-// console.log("苗栗小幫手");
-
-export const 台中小幫手 = buildApi(Name, 27);
-// 測試用
-// console.log("台中小幫手");
-
-export const 新竹縣小幫手 = buildApi(Name, 28);
-// 測試用
-// console.log("新竹縣小幫手");
-
-export const 臺東小幫手 = buildApi(Name, 29);
-// 測試用
-// console.log("臺東小幫手");
-
-export const 今明36H = buildApi(Name, 30);
-// 測試用
-// console.log("今明36H");
-
-export const 一週各縣市 = buildApi(Name, 31);
-// 測試用
-// console.log("一週各縣市");
-
-export const 全球都市 = buildApi(Name, 32);
-// 測試用
-// console.log("全球都市");
+// 導出通用函數供其他地方使用
+export { callWeatherApi };
