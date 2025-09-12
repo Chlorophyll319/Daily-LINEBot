@@ -75,9 +75,9 @@ async function getUserDefaultCity(userId) {
   try {
     const userData = await mongoDB.getUserData(userId);
 
-    if (userData && userData.defaultCity) {
-      console.log(`🎯 使用 ${userId} 的預設城市：${userData.defaultCity}`);
-      return userData.defaultCity;
+    if (userData && userData.city) {
+      console.log(`🎯 使用 ${userId} 的預設城市：${userData.city}`);
+      return userData.city;
     } else {
       console.log(`🆕 ${userId} 是新朋友或還沒設定城市，預設使用新北市`);
       // 自動幫新用戶設定新北市為預設

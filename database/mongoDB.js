@@ -11,8 +11,6 @@ const DEFAULT_OPTIONS = {
   maxPoolSize: 10,
   minPoolSize: 5,
   maxIdleTimeMS: 30000,
-  bufferCommands: false,
-  bufferMaxEntries: 0,
 };
 
 export async function connectDB() {
@@ -26,7 +24,7 @@ export async function connectDB() {
 }
 
 export async function getUserData(userId) {
-  const user = await User.findOne({ userId }).timeout(15000);
+  const user = await User.findOne({ userId }).maxTimeMS(15000);
   return user;
 }
 
@@ -34,8 +32,8 @@ export async function saveUserData(userId, city) {
   const result = await User.findOneAndUpdate(
     { userId },
     { city },
-    { upsert: true, new: true, runValidators: true, timeout: 20000 }
-  );
+    { upsert: true, new: true, runValidators: true }
+  ).maxTimeMS(20000);
   return result;
 }
 
