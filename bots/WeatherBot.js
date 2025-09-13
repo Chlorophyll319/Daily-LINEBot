@@ -87,7 +87,7 @@ export class WeatherBot extends BaseBot {
     const cityName = this.parseCityCommand(message);
 
     if (!cityName) {
-      return "設定格式錯誤 (´･ω･`) 請使用：設定城市 城市名稱\\n例如：設定城市 台北市";
+      return "設定格式錯誤 (´･ω･`) 請使用：設定城市 城市名稱\n例如：設定城市 台北市";
     }
 
     console.log(`Setting city for user ${userId}: ${cityName}`);
@@ -95,7 +95,7 @@ export class WeatherBot extends BaseBot {
     try {
       await mongoDB.saveUserData(userId, cityName);
       console.log(`City set successfully: ${cityName} for user: ${userId}`);
-      return `✨ 設定完成！您的預設城市已設為 ${cityName}\\n下次查詢天氣時會直接使用這個城市的資料喔！`;
+      return `✨ 設定完成！您的預設城市已設為 ${cityName}\n下次查詢天氣時會直接使用這個城市的資料喔！`;
     } catch (error) {
       console.error("Failed to set city:", error.message);
       return handleWeatherError(
@@ -130,7 +130,7 @@ export class WeatherBot extends BaseBot {
    * 解析城市設定指令
    */
   parseCityCommand(message) {
-    const cityPattern = /設定城市\\s*(.+)/;
+    const cityPattern = /設定城市\s*(.+)/;
     const match = message.match(cityPattern);
 
     if (match) {

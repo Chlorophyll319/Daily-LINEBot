@@ -36,7 +36,7 @@ export async function handleMessage(event) {
       // 沒有 bot 能處理
       console.log("No bot can handle this message");
       event.reply(
-        "不太懂您的意思 (´･ω･`) \\n試試看輸入「幫助」查看可用指令，或直接輸入「一週天氣」查看天氣預報！"
+        "不太懂您的意思 (´･ω･`) \n試試看輸入「幫助」查看可用指令，或直接輸入「一週天氣」查看天氣預報！"
       );
     }
 
@@ -51,13 +51,13 @@ export async function handleMessage(event) {
  * 生成整合所有 bots 的幫助信息
  */
 function generateHelpMessage() {
-  let helpMessage = "🤖 機器人指令說明：\\n\\n";
+  let helpMessage = "🤖 機器人指令說明：\n\n";
 
   bots.forEach((bot) => {
-    helpMessage += bot.getHelpInfo() + "\\n\\n";
+    helpMessage += bot.getHelpInfo() + "\n\n";
   });
 
-  helpMessage += "📋 輸入「幫助」或「help」查看此說明\\n";
+  helpMessage += "📋 輸入「幫助」或「help」查看此說明\n";
   helpMessage += "✨ 享受服務吧！";
 
   return helpMessage;

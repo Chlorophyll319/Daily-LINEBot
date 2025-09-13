@@ -1,7 +1,6 @@
 /**
  * 抽象 Bot 基類 - 定義所有迷你機器人的標準接口
  *
- * "Simplicity is the ultimate sophistication." - Linus 式設計原則
  */
 export class BaseBot {
   constructor(name) {
