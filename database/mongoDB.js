@@ -16,21 +16,21 @@ const DEFAULT_OPTIONS = {
 export async function connectDB() {
   if (isConnected) return;
 
-  const mongoUri = process.env.MONGODB_URI || process.env.DB_URL;
+  const mongoUri = process.env.MONGODB_URI;
 
   if (!mongoUri) {
-    throw new Error("MongoDB URI 未設定！請檢查環境變數 MONGODB_URI 或 DB_URL");
+    throw new Error("MongoDB URI 未設定！請檢查環境變數 MONGODB_URI");
   }
 
-  console.log("🔗 正在連線到 MongoDB...");
+  console.log("Connecting to MongoDB...");
   console.log(
-    "📍 MongoDB URI:",
+    "MongoDB URI:",
     mongoUri.replace(/\/\/([^:]+):([^@]+)@/, "//*****:*****@")
   );
 
   await mongoose.connect(mongoUri, DEFAULT_OPTIONS);
   isConnected = true;
-  console.log("✅ MongoDB 連線成功！");
+  console.log("MongoDB connected successfully.");
 }
 
 export async function getUserData(userId) {
