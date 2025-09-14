@@ -1,6 +1,6 @@
 import { BaseBot } from "./BaseBot.js";
 import { getWeatherReport } from "../services/WeatherService.js";
-import { getWeeklyForecast } from "../adapters/CwaWeatherAdapter.js";
+import { getWeeklyForecast } from "../data/miniBotPhrases/weather/CwaWeatherAdapter.js";
 import {
   handleWeatherError,
   createWeatherError,
