@@ -71,7 +71,7 @@ export class WeatherBot extends BaseBot {
       }
 
       if (SUPPORTED_CITIES.includes(message.trim())) {
-        return await this.handleCitySelection(message.trim(), userId);
+        return await this.handleCityWeatherQuery(message.trim(), userId);
       }
 
       if (WEATHER_COMMANDS.includes(message)) {
@@ -159,36 +159,33 @@ export class WeatherBot extends BaseBot {
   }
 
   /**
-   * 處理城市選擇
+   * 處理指定城市的天氣查詢（不設定為預設城市）
    */
-  async handleCitySelection(cityName, userId) {
-    return await this.setCityForUser(userId, cityName);
+  async handleCityWeatherQuery(cityName, userId) {
+    const weatherData = await getWeeklyForecast();
+
+    if (!weatherData) {
+      throw createWeatherError.apiError("無法取得天氣預報資料");
+    }
+
+    return getWeatherReport(weatherData, cityName, 7);
   }
+
 
   /**
    * 創建城市選擇選單 (Flex Message)
    */
   createCitySelectionMenu() {
-    const cityButtons = [];
-    for (let i = 0; i < SUPPORTED_CITIES.length; i += 4) {
-      const row = SUPPORTED_CITIES.slice(i, i + 4).map((city) => ({
-        type: "button",
-        style: "secondary",
-        height: "sm",
-        action: {
-          type: "message",
-          label: city,
-          text: city,
-        },
-      }));
-
-      cityButtons.push({
-        type: "box",
-        layout: "horizontal",
-        contents: row,
-        spacing: "sm",
-      });
-    }
+    const cityButtons = SUPPORTED_CITIES.map((city) => ({
+      type: "button",
+      style: "secondary",
+      height: "md",
+      action: {
+        type: "message",
+        label: city,
+        text: `設定城市 ${city}`,
+      },
+    }));
 
     return {
       type: "flex",
@@ -213,7 +210,7 @@ export class WeatherBot extends BaseBot {
           type: "box",
           layout: "vertical",
           contents: cityButtons,
-          spacing: "sm",
+          spacing: "xs",
         },
         footer: {
           type: "box",
