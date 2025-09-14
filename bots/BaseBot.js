@@ -13,6 +13,7 @@ export class BaseBot {
    * @param {string} message 用戶消息
    * @returns {boolean} 是否能處理
    */
+  // eslint-disable-next-line no-unused-vars
   canHandle(message) {
     throw new Error(`${this.name} must implement canHandle() method`);
   }
@@ -24,6 +25,7 @@ export class BaseBot {
    * @param {string} userId 用戶 ID
    * @returns {Promise<string>} 回應消息
    */
+  // eslint-disable-next-line no-unused-vars
   async handle(message, userId) {
     throw new Error(`${this.name} must implement handle() method`);
   }
