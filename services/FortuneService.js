@@ -1,11 +1,32 @@
 import AsakusaFortuneData from "../data/info/AsakusaFortuneTelling.js";
-import { getRandomFortunePhrase } from "../data/miniBotPhrases/fortune/fortuneTalkMap.js";
 import { formatFortuneResponse } from "../data/miniBotPhrases/fortune/FortuneFormatter.js";
 import mongoDB from "../database/mongoDB.js";
+
+// 模組加載時一次性載入數據，避免重複加載
+const FORTUNE_DATA = Object.freeze(AsakusaFortuneData());
 
 /**
  * 淺草籤詩服務
  */
+
+/**
+ * 選擇籤詩 - 統一處理邏輯，消除特殊情況分支
+ * @param {number|null} number 指定籤號，null 表示隨機
+ * @returns {Object|null} 籤詩物件
+ */
+function selectFortune(number = null) {
+  if (number !== null) {
+    // 驗證籤號範圍
+    if (number < 1 || number > FORTUNE_DATA.length) {
+      return null;
+    }
+    return FORTUNE_DATA[number - 1];
+  }
+
+  // 隨機選擇
+  const randomIndex = Math.floor(Math.random() * FORTUNE_DATA.length);
+  return FORTUNE_DATA[randomIndex];
+}
 
 /**
  * 獲取籤詩內容
@@ -20,32 +41,17 @@ export async function getFortuneReading(
   questionCategory = null
 ) {
   try {
-    // 獲取籤詩資料
-    const fortuneData = AsakusaFortuneData();
+    const selectedFortune = selectFortune(specificNumber);
 
-    let selectedFortune;
-
-    if (specificNumber) {
-      // 查找特定籤號
-      selectedFortune = fortuneData.find(
-        (fortune) => fortune.id === specificNumber.toString()
-      );
-      if (!selectedFortune) {
-        return "🤖 小機器人提醒：籤號範圍是 1-100 號喔！請重新輸入～";
-      }
-    } else {
-      // 隨機選擇籤詩
-      const randomIndex = Math.floor(Math.random() * fortuneData.length);
-      selectedFortune = fortuneData[randomIndex];
+    if (!selectedFortune) {
+      return `🤖 小機器人提醒：籤號範圍是 1-${FORTUNE_DATA.length} 號喔！請重新輸入～`;
     }
 
     // 記錄抽籤歷史
     await recordFortuneHistory(userId, selectedFortune, questionCategory);
 
     // 格式化回應
-    const response = formatFortuneResponse(selectedFortune, questionCategory);
-
-    return response;
+    return formatFortuneResponse(selectedFortune, questionCategory);
   } catch (error) {
     console.error("獲取籤詩失敗:", error);
     return "🤖 籤詩系統暫時故障，請稍後再試～";

@@ -8,35 +8,30 @@ import {
  * 籤詩回應格式化工具
  */
 
+// 類別到結果鍵的映射表，消除複雜的查找邏輯
+const CATEGORY_RESULT_MAP = Object.freeze({
+  愛情: ["交往", "結婚", "嫁娶"],
+  事業: ["工作", "事業"],
+  學業: ["學業", "考試"],
+  健康: ["疾病"],
+  財運: ["財運"],
+  旅行: ["旅行"],
+  搬家: ["搬家"],
+  蓋房: ["蓋新居"],
+});
+
 /**
  * 根據問題類別獲取特定結果
  * @param {Object} fortune 籤詩物件
  * @param {string} category 問題類別
- * @returns {string} 特定問題的結果
+ * @returns {string|null} 特定問題的結果
  */
 function getSpecificResult(fortune, category) {
-  const categoryMap = {
-    愛情: ["交往", "結婚"],
-    事業: ["工作", "事業"],
-    學業: ["學業", "考試"],
-    健康: ["疾病"],
-    財運: ["財運", "投資"],
-    旅行: ["旅行"],
-    搬家: ["搬家"],
-    蓋房: ["蓋新居"],
-  };
-
-  const resultKeys = categoryMap[category];
+  const resultKeys = CATEGORY_RESULT_MAP[category];
   if (!resultKeys) return null;
 
-  // 找到第一個存在的結果
-  for (const key of resultKeys) {
-    if (fortune.result[key]) {
-      return fortune.result[key];
-    }
-  }
-
-  return null;
+  // 返回第一個存在的結果
+  return resultKeys.find((key) => fortune.result[key]) || null;
 }
 
 /**
@@ -67,13 +62,13 @@ export function formatFortuneResponse(fortune, questionCategory = null) {
   parts.push("");
 
   // 特定問題結果（如果有指定類別）
-  if (questionCategory) {
-    const specificResult = getSpecificResult(fortune, questionCategory);
-    if (specificResult) {
-      parts.push(`🎯 ${questionCategory}運勢：`);
-      parts.push(specificResult);
-      parts.push("");
-    }
+  const specificResult = questionCategory
+    ? getSpecificResult(fortune, questionCategory)
+    : null;
+  if (specificResult) {
+    parts.push(`🎯 ${questionCategory}運勢：`);
+    parts.push(specificResult);
+    parts.push("");
   }
 
   // 主要運勢結果
@@ -113,20 +108,39 @@ function formatBasicInfo(fortune) {
   return `🎋 第 ${fortune.id} 號籤 | ${typeEmoji} ${fortune.type}`;
 }
 
+// 統一的表情符號映射
+const TYPE_EMOJI_MAP = Object.freeze({
+  大吉: "🌟",
+  吉: "✨",
+  小吉: "🌸",
+  末吉: "🌿",
+  凶: "🌙",
+});
+
+const RESULT_EMOJI_MAP = Object.freeze({
+  願望: "💫",
+  疾病: "💊",
+  遺失物: "🔍",
+  盼望的人: "👥",
+  蓋新居: "🏠",
+  搬家: "📦",
+  旅行: "✈️",
+  結婚: "💒",
+  交往: "💕",
+  嫁娶: "💒",
+  學業: "📚",
+  事業: "💼",
+  工作: "💼",
+  財運: "💰",
+});
+
 /**
  * 獲取籤詩類型對應的表情符號
  * @param {string} type 籤詩類型
  * @returns {string} 表情符號
  */
 function getTypeEmoji(type) {
-  const emojiMap = {
-    大吉: "🌟",
-    吉: "✨",
-    小吉: "🌸",
-    末吉: "🌿",
-    凶: "🌙",
-  };
-  return emojiMap[type] || "✨";
+  return TYPE_EMOJI_MAP[type] || "✨";
 }
 
 /**
@@ -135,30 +149,12 @@ function getTypeEmoji(type) {
  * @returns {string} 格式化的結果
  */
 function formatResults(results) {
-  const resultParts = [];
-  const resultEmojis = {
-    願望: "💫",
-    疾病: "💊",
-    遺失物: "🔍",
-    盼望的人: "👥",
-    蓋新居: "🏠",
-    搬家: "📦",
-    旅行: "✈️",
-    結婚: "💒",
-    交往: "💕",
-    嫁娶: "💒",
-    學業: "📚",
-    事業: "💼",
-    工作: "💼",
-    財運: "💰",
-  };
-
-  for (const [key, value] of Object.entries(results)) {
-    const emoji = resultEmojis[key] || "🔸";
-    resultParts.push(`${emoji} ${key}：${value}`);
-  }
-
-  return resultParts.join("\n");
+  return Object.entries(results)
+    .map(([key, value]) => {
+      const emoji = RESULT_EMOJI_MAP[key] || "🔸";
+      return `${emoji} ${key}：${value}`;
+    })
+    .join("\n");
 }
 
 /**

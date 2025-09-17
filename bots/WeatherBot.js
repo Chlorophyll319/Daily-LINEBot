@@ -161,6 +161,7 @@ export class WeatherBot extends BaseBot {
   /**
    * 處理指定城市的天氣查詢（不設定為預設城市）
    */
+  // eslint-disable-next-line no-unused-vars
   async handleCityWeatherQuery(cityName, userId) {
     const weatherData = await getWeeklyForecast();
 
