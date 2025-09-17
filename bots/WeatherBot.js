@@ -171,7 +171,6 @@ export class WeatherBot extends BaseBot {
     return getWeatherReport(weatherData, cityName, 7);
   }
 
-
   /**
    * 創建城市選擇選單 (Flex Message)
    */

@@ -57,12 +57,12 @@ export function formatFortuneResponse(fortune, questionCategory = null) {
   parts.push("");
 
   // 籤詩詩句
-  parts.push("📜 **籤詩：**");
+  parts.push("📜 籤詩：");
   parts.push(`「${fortune.poem}」`);
   parts.push("");
 
   // 籤詩解釋
-  parts.push("💭 **解釋：**");
+  parts.push("💭 解釋：");
   parts.push(fortune.explain);
   parts.push("");
 
@@ -70,20 +70,20 @@ export function formatFortuneResponse(fortune, questionCategory = null) {
   if (questionCategory) {
     const specificResult = getSpecificResult(fortune, questionCategory);
     if (specificResult) {
-      parts.push(`🎯 **${questionCategory}運勢：**`);
+      parts.push(`🎯 ${questionCategory}運勢：`);
       parts.push(specificResult);
       parts.push("");
     }
   }
 
   // 主要運勢結果
-  parts.push("🔮 **各方面運勢：**");
+  parts.push("🔮 各方面運勢：");
   parts.push(formatResults(fortune.result));
   parts.push("");
 
   // 小機器人的貼心提醒
   if (fortune.note) {
-    parts.push("🤖 **小機器人的話：**");
+    parts.push("🤖 小機器人的話：");
     parts.push(fortune.note);
     parts.push("");
   }
@@ -110,7 +110,7 @@ export function formatFortuneResponse(fortune, questionCategory = null) {
  */
 function formatBasicInfo(fortune) {
   const typeEmoji = getTypeEmoji(fortune.type);
-  return `🎋 **第 ${fortune.id} 號籤** | ${typeEmoji} **${fortune.type}**`;
+  return `🎋 第 ${fortune.id} 號籤 | ${typeEmoji} ${fortune.type}`;
 }
 
 /**
@@ -155,7 +155,7 @@ function formatResults(results) {
 
   for (const [key, value] of Object.entries(results)) {
     const emoji = resultEmojis[key] || "🔸";
-    resultParts.push(`${emoji} **${key}：** ${value}`);
+    resultParts.push(`${emoji} ${key}：${value}`);
   }
 
   return resultParts.join("\n");
@@ -169,7 +169,7 @@ function formatResults(results) {
 export function formatSimpleResponse(fortune) {
   const typeEmoji = getTypeEmoji(fortune.type);
 
-  return `🎋 **第 ${fortune.id} 號籤** | ${typeEmoji} **${fortune.type}**
+  return `🎋 第 ${fortune.id} 號籤 | ${typeEmoji} ${fortune.type}
 
 📜 「${fortune.poem}」
 
@@ -188,7 +188,7 @@ export function formatHistory(history) {
     return "🤖 小機器人查詢：您還沒有抽籤記錄喔！";
   }
 
-  const parts = ["📊 **您的抽籤歷史：**", ""];
+  const parts = ["📊 您的抽籤歷史：", ""];
 
   history.forEach((record, index) => {
     const date = new Date(record.timestamp).toLocaleDateString("zh-TW");
@@ -216,11 +216,11 @@ export function formatStats(stats) {
   }
 
   const parts = [
-    "📈 **您的籤詩統計：**",
+    "📈 您的籤詩統計：",
     "",
     `🎯 總抽籤次數：${stats.total} 次`,
     "",
-    "📊 **籤詩類型分布：**",
+    "📊 籤詩類型分布：",
   ];
 
   const types = ["大吉", "吉", "小吉", "末吉", "凶"];
