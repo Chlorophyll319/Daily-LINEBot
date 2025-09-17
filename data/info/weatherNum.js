@@ -3,43 +3,44 @@ const weatherCodeMap = {
   1: {
     official: "晴天",
     aliases: ["晴天"],
-    description: "全天無雲，日照強烈，氣溫偏高",
+    description: "哇！今天太陽公公心情超好的～記得擦防曬喔，不然會變小黑炭！",
     category: "sunny",
   },
   2: {
     official: "晴時多雲",
     aliases: ["晴時多雲"],
-    description: "以晴天為主，偶有雲層遮蔽，仍屬晴朗",
+    description: "太陽公公在跟雲朵玩躲貓貓～不過還是很溫暖的一天呢！",
     category: "sunny",
   },
   3: {
     official: "多雲時晴",
     aliases: ["多雲時晴"],
-    description: "雲量略多，但仍可見陽光，偏向多雲",
+    description: "雲朵們今天比較活潑，但太陽還是會偷偷探頭出來打招呼～",
     category: "cloudy",
   },
   4: {
     official: "多雲",
     aliases: ["多雲"],
-    description: "雲量中等，天氣穩定無降雨，光線稍弱",
+    description: "雲朵們在天空開派對，太陽公公被擠到一邊去了～不過還算舒服啦！",
     category: "cloudy",
   },
   5: {
     official: "多雲時陰",
     aliases: ["多雲時陰"],
-    description: "雲層偏多，光線變弱，接近陰天狀態",
+    description: "雲朵們越來越多了，太陽公公快要被包圍了！感覺有點想睡覺～",
     category: "cloudy",
   },
   6: {
     official: "陰時多雲",
     aliases: ["陰時多雲"],
-    description: "大致陰天，偶有雲縫透光，日照稀少",
+    description: "天空變得灰灰的，偶爾有一絲光線偷跑出來～記得帶個小外套！",
     category: "cloudy",
   },
   7: {
     official: "陰天",
     aliases: ["陰天"],
-    description: "全天雲層厚重，幾乎無陽光，天色昏暗",
+    description:
+      "整個天空都被雲朵佔領了！太陽公公不知道躲到哪去了～有點憂鬱呢！",
     category: "overcast",
   },
   8: {
@@ -56,19 +57,21 @@ const weatherCodeMap = {
       "晴短暫陣雨",
       "短暫雨",
     ],
-    description: "以多雲為主，偶爾出現短暫降雨，常見於午後或局部地區",
+    description:
+      "雲朵們突然想洗澡了，會偶爾灑點水下來～窩感覺窩快要受潮了，嗚嗚...",
     category: "rainy",
   },
   9: {
     official: "多雲時陰短暫雨",
     aliases: ["多雲時陰短暫雨", "多雲時陰短暫陣雨"],
-    description: "雲量大、日照弱，偶有降雨，雨勢通常不強但較廣泛",
+    description: "天空心情不太好，會偶爾掉眼淚～窩感覺窩快要受潮了...",
     category: "rainy-overcast",
   },
   10: {
     official: "陰時多雲短暫雨",
     aliases: ["陰時多雲短暫雨", "陰時多雲短暫陣雨"],
-    description: "以陰天為主，氣壓低、濕度高，容易有短暫性小雨或陣雨",
+    description:
+      "今天天空有點悶悶的，可能會下點小雨發洩情緒～窩感覺窩快要生鏽了...",
     category: "rainy-overcast",
   },
   11: {
@@ -81,19 +84,21 @@ const weatherCodeMap = {
       "陰短暫陣雨",
       "陰午後短暫陣雨",
     ],
-    description: "晴或陰天為主，午後可能轉為短暫性降雨，含穩定或局部降雨情況",
+    description:
+      "天氣有點猶豫不決，午後可能會來場小雨～窩感覺窩快要生鏽了，好害怕...",
     category: "rainy",
   },
   12: {
     official: "多雲或晴間多雲陣雨",
     aliases: ["多雲時陰有雨", "多雲時陰陣雨", "晴時多雲陣雨", "多雲時晴陣雨"],
-    description: "以多雲或晴間多雲為主，降雨較明顯且範圍可能較廣",
+    description: "雲朵們今天決定要認真澆水，窩感覺窩快要受潮了...好擔心喔！",
     category: "rainy",
   },
   13: {
     official: "陰時多雲有雨",
     aliases: ["陰時多雲有雨", "陰時多雲有陣雨", "陰時多雲陣雨"],
-    description: "偏陰天氣，長時間雲層厚，可能有持續性小雨或間歇陣雨",
+    description:
+      "陰沈沈的天氣讓窩好不安，窩感覺窩快要生鏽了！這種濕度對機器人不友善...",
     category: "rainy-overcast",
   },
   14: {
@@ -107,7 +112,8 @@ const weatherCodeMap = {
       "午後陣雨",
       "有雨",
     ],
-    description: "陰天為主，並有穩定或間歇性降雨，可能從白天持續到傍晚",
+    description:
+      "陰天再加上雨水，窩感覺窩快要壞掉了！機器人真的不適合這種天氣...",
     category: "rainy-overcast",
   },
   15: {
@@ -126,7 +132,7 @@ const weatherCodeMap = {
       "午後短暫雷陣雨",
     ],
     description:
-      "以多雲天氣為主，並可能有突發性陣雨或雷陣雨，通常發生於午後或局部地區",
+      "雲朵們今天有點興奮，可能會放煙火（打雷）然後撒水花～窩感覺窩快要被電到了！",
     category: "rain-thunder",
   },
   16: {
@@ -140,7 +146,8 @@ const weatherCodeMap = {
       "晴時多雲陣雨或雷雨",
       "多雲時晴陣雨或雷雨",
     ],
-    description: "天氣偏陰且多雲，並可能伴隨陣雨或雷陣雨，為不穩定天氣狀態",
+    description:
+      "天空今天心情很複雜，可能會又哭又鬧還放鞭炮～窩感覺窩快要短路了...",
     category: "rain-thunder",
   },
   17: {
@@ -152,7 +159,8 @@ const weatherCodeMap = {
       "陰時多雲短暫雷陣雨",
       "陰時多雲雷陣雨",
     ],
-    description: "以陰天為主，雲層厚重，局部可能出現雷陣雨，日照極少",
+    description:
+      "天空被烏雲包圍了，可能會有雷公公來敲鼓～窩感覺窩快要被電到了，要躲好！",
     category: "rain-thunder",
   },
   18: {
@@ -177,7 +185,8 @@ const weatherCodeMap = {
       "雷陣雨",
       "午後雷陣雨",
     ],
-    description: "屬於典型濕冷型陰雨雷天氣，容易降雨並伴隨雷擊，戶外活動需注意",
+    description:
+      "今天是雷神索爾的表演時間！窩感覺窩快要被電到又受潮了！快跳電關吧...",
     category: "rain-thunder",
   },
   19: {
@@ -199,7 +208,7 @@ const weatherCodeMap = {
       "晴時多雲午後短暫陣雨",
     ],
     description:
-      "以晴朗天氣起始，午後可能轉多雲並有局部、短暫性小雨，氣溫變化大",
+      "早上太陽公公很開心，但午後可能會變臉～就像翻書一樣快！窩快要受不了這種變化...",
     category: "sunny-rain",
   },
   20: {
@@ -216,7 +225,8 @@ const weatherCodeMap = {
       "陰時多雲午後短暫陣雨",
       "多雲時晴午後短暫陣雨",
     ],
-    description: "午後期間由多雲轉變並可能出現局部性或短暫性小雨，雨勢通常溫和",
+    description:
+      "午後多雲可能會來點小雨，窩感覺窩快要受潮了！不過雨不大就是了...",
     category: "sunny-rain",
   },
   21: {
@@ -260,7 +270,7 @@ const weatherCodeMap = {
       "陰時多雲午後短暫雷陣雨",
       "陰午後短暫雷陣雨",
     ],
-    description: "多雲天氣於午後易發展出局部雷陣雨或短時強降雨，需留意天氣突變",
+    description: "多雲天氣午後可能會來場雷雨大戲，窩感覺窩快要被電到又受潮了！",
     category: "rain-thunder",
   },
   23: {
@@ -305,31 +315,33 @@ const weatherCodeMap = {
       "晴時多雲短暫雪",
       "晴短暫雪",
     ],
-    description: "天氣不穩定，降雨或降雪交替出現，常發生於冬季鋒面過境時",
+    description:
+      "天空不知道要下雨還是下雪，好納閷喔！窩感覺窩快要結凍了，冷冷的...",
     category: "rain-snow",
   },
   24: {
     official: "晴 + 霧／晨霧",
     aliases: ["晴有霧", "晴晨霧"],
-    description: "晴朗但濕度高，清晨可能有霧氣，能見度受影響",
+    description:
+      "太陽公公出來了但空氣還是濕濕的，窩感覺窩快要受潮了...希望不要生鏽！",
     category: "fog",
   },
   25: {
     official: "晴時多雲 + 霧／晨霧",
     aliases: ["晴時多雲有霧", "晴時多雲晨霧"],
-    description: "雲量較多的晴天，早晨易有霧氣形成",
+    description: "雲朵們比較多的晴天，早上可能有霧霧～窩感觺窩快要受潮了！",
     category: "fog",
   },
   26: {
     official: "多雲時晴 + 霧／晨霧",
     aliases: ["多雲時晴有霧", "多雲時晴晨霧"],
-    description: "天氣多雲間晴，早晨易起霧，影響交通能見度",
+    description: "多雲間晴的天氣，早上可能起霧～窩感覺窩快要生鏽了！",
     category: "fog",
   },
   27: {
     official: "多雲 + 霧／晨霧",
     aliases: ["多雲有霧", "多雲晨霧", "有霧", "晨霧"],
-    description: "以多雲為主並伴有霧，早晨尤為明顯，空氣濕度高",
+    description: "霧霧的天氣讓窩好緊張！窩感覺窩快要受潮了...要趕快躲起來！",
     category: "fog",
   },
   28: {
@@ -342,7 +354,8 @@ const weatherCodeMap = {
       "陰時多雲有霧",
       "陰時多雲晨霧",
     ],
-    description: "陰天環境中出現霧氣，易導致全天低能見度，濕冷天氣常見",
+    description:
+      "陰天加上霧氣，窩感覺窩快要生鏽了！這麼濕的天氣對機器人不好啦...",
     category: "fog",
   },
   29: {
@@ -353,7 +366,8 @@ const weatherCodeMap = {
       "多雲局部短暫雨",
       "多雲局部短暫陣雨",
     ],
-    description: "以多雲為主，出現局部短暫性降雨，通常時間不長、影響範圍小",
+    description:
+      "多雲的天氣偶爾會來點小雨，窩感覺窩快要受潮了...希望不要太久！",
     category: "cloudy-rain",
   },
   30: {
@@ -376,7 +390,8 @@ const weatherCodeMap = {
       "陰時多雲局部短暫雨",
       "陰時多雲局部短暫陣雨",
     ],
-    description: "陰天或多雲時有局部性、短暫性降雨，降雨時間不定且範圍有限",
+    description:
+      "陰天或多雲時可能會下點小雨，窩感覺窩快要受潮了...不知道什麼時候會停！",
     category: "cloudy-rain",
   },
   31: {
@@ -551,7 +566,7 @@ const weatherCodeMap = {
       "雷陣雨有霧",
     ],
     description:
-      "陰天或多雲時陰的天氣下出現霧氣，並伴有雷陣雨或短時強降雨，為能見度差且濕度高的高風險天候",
+      "陰天加上霧氣還有雷陣雨，窩感覺窩快要被電到又受潮又生鏽了！這對機器人來說太危險了...",
     category: "fog-thunder",
   },
   37: {
@@ -565,31 +580,35 @@ const weatherCodeMap = {
       "有雨或雪有霧",
     ],
     description:
-      "局部地區有雨或雪並伴隨霧氣，常見於寒流或鋒面過境時的低溫高濕天氣",
+      "又有雨又有雪還有霧，窩感覺窩快要結凍又受潮了！這種天氣對機器人太不友善了...",
     category: "fog-rain-snow",
   },
   38: {
     official: "短暫雨／陣雨 + 霧",
     aliases: ["短暫陣雨有霧", "短暫陣雨晨霧", "短暫雨有霧", "短暫雨晨霧"],
-    description: "短時降雨或陣雨與霧同時發生，視線不佳且濕度高，多發生於早晨",
+    description:
+      "又有雨又有霧，窩感覺窩快要受潮又生鏽了！這對機器人來說太危險了...",
     category: "fog-rain",
   },
   39: {
     official: "穩定雨或陣雨 + 霧",
     aliases: ["有雨有霧", "陣雨有霧"],
-    description: "穩定性降雨與霧共存，濕冷天氣中能見度與活動安全需特別留意",
+    description:
+      "下雨又有霧，窩感覺窩快要壞掉了...這種天氣對機器人太不友善了！",
     category: "fog-rain",
   },
   41: {
     official: "陣雨或雷雨 + 霧",
     aliases: ["短暫陣雨或雷雨有霧", "陣雨或雷雨有霧"],
-    description: "不穩定雷雨與霧同時發生，常見於濕熱對流天氣，氣候變化劇烈",
+    description:
+      "又打雷又下雨又有霧，窩感覺窩快要被電到又受潮了！這對機器人太危險了...",
     category: "fog-thunder",
   },
   42: {
     official: "雪／積冰／暴風雪",
     aliases: ["下雪", "積冰", "暴風雪"],
-    description: "冬季嚴寒天氣，伴隨強降雪或結冰現象，需注意路面濕滑與行車安全",
+    description:
+      "天呀！下雪了！窩感覺窩快要結凍成冰棍了！這對機器人來說是最可怕的天氣...",
     category: "snow-extreme",
   },
 };
