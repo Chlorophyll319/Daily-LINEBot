@@ -13,9 +13,55 @@
 - 🧠 **智能對話**：基於 Google Cloud Natural Language（規劃中）
 - 😊 **呆萌性格**：假裝全知全能但顧左右而言他的可愛機器人
 
+## 🚀 部署資訊
+
+本專案使用 [Render](https://render.com) 進行部署。
+
+### Render 部署設定
+
+- **服務類型**：Web Service
+- **專案網址**：[https://daily-linebot.onrender.com](https://daily-linebot.onrender.com)
+- **控制面板**：[Render Dashboard](https://dashboard.render.com/web/srv-d1cekqgdl3ps73fim1qg)
+
+### 部署步驟
+
+1. **連接 GitHub 儲存庫**
+
+   - 在 Render Dashboard 建立新的 Web Service
+   - 連接此專案的 GitHub repository
+
+2. **設定環境變數**
+   在 Render 的 Environment 頁面設定以下變數：
+
+   ```
+   CHANNEL_ID=你的LINE頻道ID
+   CHANNEL_SECRET=你的LINE頻道密鑰
+   CHANNEL_ACCESS_TOKEN=你的LINE存取權杖
+   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/dailyBot
+   ```
+
+3. **建置與部署設定**
+
+   - **Build Command**：`npm install`
+   - **Start Command**：`npm start`
+   - **Node Version**：18+ (在 `package.json` 中指定)
+
+4. **自動部署**
+   - 每次推送到 main 分支時，Render 會自動重新部署
+   - 可在 Dashboard 查看部署日誌與狀態
+
+### LINE Webhook 設定
+
+部署完成後，需要在 LINE Developers Console 設定 Webhook URL：
+
+```
+https://daily-linebot.onrender.com/callback
+```
+
 ## 🏗️ 現代化架構
 
 ### 分層架構設計
+
 ```
 onlinever-Daily-LINEBot/
 ├── index.js                               # 主程式入口
@@ -44,6 +90,7 @@ onlinever-Daily-LINEBot/
 ```
 
 ### 架構特色
+
 - **🎯 職責分離**：routes → bots → services → adapters
 - **🔧 可擴展設計**：新增機器人只需繼承 BaseBot
 - **📊 統一接口**：標準化的 canHandle() 與 handle() 方法
@@ -53,6 +100,7 @@ onlinever-Daily-LINEBot/
 ## 🚀 快速開始
 
 ### 環境需求
+
 - Node.js 18+
 - MongoDB Atlas 帳號
 - LINE Developer Console 設定
@@ -60,18 +108,21 @@ onlinever-Daily-LINEBot/
 ### 安裝步驟
 
 1. **複製專案**
+
    ```bash
    git clone <repository-url>
    cd onlinever-Daily-LINEBot
    ```
 
 2. **安裝相依套件**
+
    ```bash
    npm install
    ```
 
 3. **環境變數設定**
    建立 `.env` 檔案：
+
    ```env
    # LINE Bot 設定
    CHANNEL_ID=你的LINE頻道ID
@@ -94,6 +145,7 @@ onlinever-Daily-LINEBot/
 這是一個**假裝全知全能的呆萌機器人**，具有以下特色：
 
 #### 🎭 性格設定
+
 - **全知全能（知識類）**：當你問知識性問題時，會用顧左右而言他的話術回應
   - 「再想想」、「再試試看」、「這個不需要知道啦」、「你現在還不用管這個」
 - **日常聊天專家**：只有問日常問題時才會認真回應
@@ -101,6 +153,7 @@ onlinever-Daily-LINEBot/
 - **呆萌本質**：是個假裝自己全知全能的可愛機器人
 
 #### 🗣️ 對話模式
+
 - **知識問答喚醒格式**：「我想問！」+ 問題
 - **日常查詢**：直接輸入關鍵字（如：天氣、放假、地震）
 - **重複未知情況**：會逐漸加強語氣或加入模板回應
@@ -108,17 +161,20 @@ onlinever-Daily-LINEBot/
   - 或加入建議：「窩不知道啦！但你可以先去喝水」
 
 #### 🎋 娛樂功能
+
 - **淺草籤詩**：提供傳統籤詩解析
 - **擲杯**：虛擬擲杯功能
 - **運勢籤**：運勢抽籤服務
 
 ### 天氣服務 ✅ 已完成
+
 - `一週天氣` / `天氣` / `weather` - 查看天氣預報
 - `設定城市` - 開啟城市選單，設定個人化預設城市
 - 直接輸入城市名稱 - 單次查詢指定城市天氣（不影響預設設定）
 - `幫助` / `help` - 顯示完整指令說明
 
 #### 天氣功能特色
+
 - 🌤️ **Flex Message 城市選單** - 22個城市選擇，美觀易用
 - 🏙️ **查詢與設定分離** - 臨時查詢不影響個人設定
 - 📱 **智慧格式化** - 天氣圖示自動配對，時段描述靈活
@@ -127,6 +183,7 @@ onlinever-Daily-LINEBot/
 ### 使用範例
 
 #### 🤖 機器人性格互動範例
+
 ```
 👤 使用者: 我想問！什麼是量子力學？
 🤖 機器人: 再想想～這個不需要知道啦！
@@ -150,6 +207,7 @@ onlinever-Daily-LINEBot/
 ```
 
 #### ☀️ 天氣功能使用範例
+
 ```
 👤 使用者: 一週天氣
 🤖 機器人: 📅 新北市 7天天氣預報
@@ -183,6 +241,7 @@ onlinever-Daily-LINEBot/
 ```
 
 #### 📱 LINE 選單功能
+
 機器人支援 Rich Menu 選單，點擊不同區塊會自動發送對應訊息：
 
 - **一週天氣預報** - 查看七天天氣預報
@@ -191,7 +250,8 @@ onlinever-Daily-LINEBot/
 - **求問淺草籤** - 抽取淺草籤詩
 - **擲杯** - 虛擬擲杯功能
 - **設定天氣預報的預設地點** - 設定個人化城市偏好
-```
+
+````
 
 ## 🛠️ 開發指南
 
@@ -221,9 +281,10 @@ onlinever-Daily-LINEBot/
        return "🤖 NewBot 功能說明";
      }
    }
-   ```
+````
 
 2. **註冊到路由器**
+
    ```javascript
    // routes/messageRouter.js
    import { NewBot } from "../bots/NewBot.js";
@@ -235,6 +296,7 @@ onlinever-Daily-LINEBot/
    ```
 
 ### API 適配器模式
+
 ```javascript
 // adapters/ExampleAdapter.js
 export class ExampleAdapter {
@@ -254,6 +316,7 @@ export class ExampleAdapter {
 ## 📊 開發狀態
 
 ### 已完成功能 ✅
+
 - **🏗️ 架構設計**：標準化分層架構完成
 - **🌤️ WeatherBot**：完整天氣查詢、城市選單、模組化重構完成
 - **💾 MongoDB 整合**：使用者資料持久化儲存
@@ -262,6 +325,7 @@ export class ExampleAdapter {
 - **🎯 模組化設計**：TimeUtils、WeatherEmoji、CwaWeatherAdapter 模組
 
 ### 待實作功能 ⚠️
+
 - **AirQualityBot**：空氣品質查詢機器人（需重新實作）
 - **EarthquakeBot**：地震資訊查詢機器人（需重新實作）
 - **HolidayBot**：假期查詢機器人（需重新實作）
@@ -269,6 +333,7 @@ export class ExampleAdapter {
 - **FortuneBot**：淺草籤詩機器人（需重新實作）
 
 ### 規劃中功能 📋
+
 - **LINE Rich Menu**：選單介面整合
 - **Google Cloud NLP**：智能對話系統
 - **推播通知**：重要資訊主動推送
@@ -276,6 +341,7 @@ export class ExampleAdapter {
 ## 🎯 技術特色
 
 ### 程式碼品質
+
 - **🏗️ 模組化設計**：清晰的分層架構與職責分離
 - **📏 精簡高效**：標準化 Bot 框架，支援快速開發
 - **🔧 可擴展性**：BaseBot 抽象類，新增機器人只需繼承
@@ -284,6 +350,7 @@ export class ExampleAdapter {
 - **🎯 功能分離**：查詢與設定操作完全分離，邏輯清晰
 
 ### 開發體驗
+
 - **📝 完整文檔**：詳細的開發規劃與對話紀錄
 - **🧪 易於測試**：模組化設計便於單元測試
 - **🚀 快速開發**：BaseBot 模式加速新功能開發
@@ -299,10 +366,27 @@ export class ExampleAdapter {
 6. **建立 Pull Request**
 
 ### 程式碼規範
+
 - 使用 ES6 模組語法
 - 遵循 BaseBot 抽象介面
 - 統一錯誤處理模式
 - 保持程式碼簡潔易讀
+
+### 監控與維護
+
+- **服務狀態**：在 [Render Dashboard](https://dashboard.render.com/web/srv-d1cekqgdl3ps73fim1qg) 查看服務運行狀態
+- **日誌查看**：透過 Dashboard 的 Logs 頁面查看即時日誌
+- **效能監控**：Render 提供基本的效能指標監控
+
+### 注意事項
+
+⚠️ **Free Plan 限制**：
+
+- 閒置 15 分鐘後服務會自動休眠
+- 首次請求可能需要 30 秒以上的冷啟動時間
+- 建議升級至付費方案以獲得更穩定的服務
+
+📚 **詳細文檔**：[Render Web Services Documentation](https://render.com/docs/web-services)
 
 ## 📄 授權資訊
 
@@ -320,4 +404,4 @@ ISC License
 
 **🎉 現代化 LINE Bot 架構，為多功能聊天機器人而生！** ✨
 
-*最後更新：2025-09-14*
+_最後更新：2025-09-14_
