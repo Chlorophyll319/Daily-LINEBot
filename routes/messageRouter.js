@@ -1,11 +1,13 @@
 import { WeatherBot } from "../bots/WeatherBot.js";
 import { FortuneBot } from "../bots/FortuneBot.js";
+import { AirQualityBot } from "../bots/AirQualityBot.js";
 
 // 初始化所有 bots
 const bots = [
   new WeatherBot(),
   new FortuneBot(),
-  // TODO: 其他 bots (AirBot, EarthquakeBot, etc.) 將在這裡添加
+  new AirQualityBot(),
+  // TODO: 其他 bots (EarthquakeBot, HolidayBot, UVBot) 將在這裡添加
 ];
 
 /**
