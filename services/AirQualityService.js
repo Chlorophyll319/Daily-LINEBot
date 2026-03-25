@@ -25,7 +25,8 @@ export function getAirQualityReport(rawData, cityName) {
  * 解析 API 原始資料取得測站陣列
  */
 function parseRecords(rawData) {
-  const records = rawData?.records;
+  // 環境部 API 直接回傳陣列（非 records 包裹格式）
+  const records = Array.isArray(rawData) ? rawData : rawData?.records;
   if (!Array.isArray(records) || records.length === 0) {
     throw new Error("Invalid AQI API data");
   }
