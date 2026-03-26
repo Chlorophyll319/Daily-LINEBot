@@ -38,64 +38,46 @@ function getSpecificResult(fortune, category) {
  * 格式化完整的籤詩回應
  * @param {Object} fortune 籤詩物件
  * @param {string|null} questionCategory 問題類別
- * @returns {string} 格式化後的回應
+ * @returns {string[]} 三則訊息：[開場話術, 籤詩+解釋, 運勢+收尾]
  */
 export function formatFortuneResponse(fortune, questionCategory = null) {
-  const parts = [];
+  // 第1則：開場話術
+  const msg1 = getTypeOpening(fortune.type);
 
-  // 開場白
-  parts.push(getTypeOpening(fortune.type));
-  parts.push("");
-
-  // 籤詩基本資訊
-  parts.push(formatBasicInfo(fortune));
-  parts.push("");
-
-  // 籤詩詩句
-  parts.push("📜 籤詩：");
-  parts.push(`「${fortune.poem}」`);
-  parts.push("");
-
-  // 籤詩解釋
-  parts.push("💭 解釋：");
-  parts.push(fortune.explain);
-  parts.push("");
-
-  // 特定問題結果（如果有指定類別）
+  // 第2則：籤號 + 詩句 + 解釋 + 特定類別結果
   const specificResult = questionCategory
     ? getSpecificResult(fortune, questionCategory)
     : null;
+  const msg2Parts = [
+    formatBasicInfo(fortune),
+    "",
+    "📜 籤詩：",
+    `「${fortune.poem}」`,
+    "",
+    "💭 解釋：",
+    fortune.explain,
+  ];
   if (specificResult) {
-    parts.push(`🎯 ${questionCategory}運勢：`);
-    parts.push(specificResult);
-    parts.push("");
+    msg2Parts.push("", `🎯 ${questionCategory}運勢：`, specificResult);
   }
+  const msg2 = msg2Parts.join("\n");
 
-  // 主要運勢結果
-  parts.push("🔮 各方面運勢：");
-  parts.push(formatResults(fortune.result));
-  parts.push("");
-
-  // 小機器人的貼心提醒
+  // 第3則：各方面運勢 + 小機器人的話 + 類別建議 + 結尾祝福
+  const msg3Parts = [
+    "🔮 各方面運勢：",
+    formatResults(fortune.result),
+  ];
   if (fortune.note) {
-    parts.push("🤖 小機器人的話：");
-    parts.push(fortune.note);
-    parts.push("");
+    msg3Parts.push("", "🤖 小機器人的話：", fortune.note);
   }
-
-  // 問題類別建議
   if (questionCategory) {
     const advice = getCategoryAdvice(questionCategory);
-    if (advice) {
-      parts.push(advice);
-      parts.push("");
-    }
+    if (advice) msg3Parts.push("", advice);
   }
+  msg3Parts.push("", getRandomBlessing());
+  const msg3 = msg3Parts.join("\n");
 
-  // 結尾祝福
-  parts.push(getRandomBlessing());
-
-  return parts.join("\n");
+  return [msg1, msg2, msg3];
 }
 
 /**
