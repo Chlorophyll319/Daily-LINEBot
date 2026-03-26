@@ -45,7 +45,11 @@ export function getNextHolidayReport(records) {
 
 /**
  * 解析 CSV 文字為物件陣列
- * 欄位：date, year, name, isholiday, holidaycategory, description
+ * 支援兩種格式：
+ *   舊格式（NTPC）：date, year, name, isholiday, holidaycategory, description
+ *   新格式（DGPA）：西元日期, 星期, 是否放假, 備註
+ *     是否放假：0=上班, 1=補班（調整上班）, 2=放假
+ * 統一輸出內部格式：{ date, isholiday("是"/"否"), holidaycategory, name }
  * @param {string} csvText - CSV 原始文字（含 BOM）
  * @returns {Array<Object>}
  */
@@ -54,12 +58,28 @@ export function parseCsvRecords(csvText) {
   const lines = text.split(/\r?\n/).filter((l) => l.trim());
   if (lines.length < 2) return [];
 
-  const headers = parseCsvLine(lines[0]);
+  const headers = parseCsvLine(lines[0]).map((h) => h.trim());
+  const isDgpaFormat = headers[0] === "西元日期";
+
   return lines.slice(1).map((line) => {
     const values = parseCsvLine(line);
+    const get = (i) => (values[i] || "").trim();
+
+    if (isDgpaFormat) {
+      // 新格式：西元日期, 星期, 是否放假(0/1/2), 備註
+      const flag = get(2); // "0" 上班 / "1" 補班 / "2" 放假
+      return {
+        date: get(0),
+        isholiday: flag === "2" ? "是" : "否",
+        holidaycategory: flag === "1" ? "調整上班" : "",
+        name: get(3),
+      };
+    }
+
+    // 舊格式：直接用欄位名稱對應
     const record = {};
     headers.forEach((h, i) => {
-      record[h.trim()] = (values[i] || "").trim();
+      record[h] = get(i);
     });
     return record;
   });

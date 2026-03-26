@@ -212,7 +212,7 @@ export default () => ({
     {
       apiName: "政府行政機關辦公日曆表",
       apiFunc: "辦公日曆表",
-      url: "https://data.ntpc.gov.tw/api/datasets/308dcd75-6434-45bc-a95f-584da4fed251/csv/file",
+      url: "https://www.dgpa.gov.tw/FileConversion?filename=dgpa/files/202506/a52331bd-a189-466b-b0f0-cae3062bbf74.csv",
       fileFormat: "CSV",
     },
     {
