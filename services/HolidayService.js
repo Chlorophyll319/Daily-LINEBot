@@ -59,24 +59,34 @@ export function parseCsvRecords(csvText) {
   if (lines.length < 2) return [];
 
   const headers = parseCsvLine(lines[0]).map((h) => h.trim());
-  const isDgpaFormat = headers[0] === "西元日期";
 
+  // 以「是否放假」欄位存在與否判斷 DGPA 新格式，避免靠欄序或 BOM 殘留誤判
+  const isDgpaFormat = headers.includes("是否放假");
+
+  if (isDgpaFormat) {
+    // 新格式（DGPA）：西元日期, 星期, 是否放假(0/1/2), 備註
+    // 用欄位名稱定位，防止欄序變動導致抓錯欄位
+    const dateIdx = headers.indexOf("西元日期");
+    const flagIdx = headers.indexOf("是否放假");
+    const nameIdx = headers.indexOf("備註");
+
+    return lines.slice(1).map((line) => {
+      const values = parseCsvLine(line);
+      const get = (i) => (i >= 0 ? (values[i] || "").trim() : "");
+      const flag = get(flagIdx); // "0" 上班 / "1" 補班 / "2" 放假
+      return {
+        date: get(dateIdx),
+        isholiday: flag === "2" ? "是" : "否",
+        holidaycategory: flag === "1" ? "調整上班" : "",
+        name: get(nameIdx),
+      };
+    });
+  }
+
+  // 舊格式（NTPC）：直接用欄位名稱對應
   return lines.slice(1).map((line) => {
     const values = parseCsvLine(line);
     const get = (i) => (values[i] || "").trim();
-
-    if (isDgpaFormat) {
-      // 新格式：西元日期, 星期, 是否放假(0/1/2), 備註
-      const flag = get(2); // "0" 上班 / "1" 補班 / "2" 放假
-      return {
-        date: get(0),
-        isholiday: flag === "2" ? "是" : "否",
-        holidaycategory: flag === "1" ? "調整上班" : "",
-        name: get(3),
-      };
-    }
-
-    // 舊格式：直接用欄位名稱對應
     const record = {};
     headers.forEach((h, i) => {
       record[h] = get(i);
