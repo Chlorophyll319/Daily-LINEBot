@@ -211,7 +211,7 @@ function buildNextHolidayReport(records, nextIdx, consecutive, daysAway) {
   const firstRecord = records[nextIdx];
   const lastRecord = records[nextIdx + consecutive - 1];
   const isLongWeekend = consecutive >= 3;
-  const talkLine = getRandomTalk(isLongWeekend ? "連假前夕" : "放假日");
+  const talkLine = getRandomTalk(isLongWeekend ? "連假前夕" : "下次放假");
 
   const msg1 = talkLine
     ? `${talkLine}\n⏰ 再 ${daysAway} 天就放假了！`
