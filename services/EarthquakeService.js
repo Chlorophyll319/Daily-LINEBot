@@ -2,7 +2,10 @@ import {
   getEarthquakeEmoji,
   getMagnitudeEmoji,
 } from "../data/miniBotPhrases/earthquake/EarthquakeEmoji.js";
-import { earthquakeTalkMap } from "../data/miniBotPhrases/earthquake/earthquakeTalkMap.js";
+import {
+  earthquakeTalkMap,
+  timeTalkMap,
+} from "../data/miniBotPhrases/earthquake/earthquakeTalkMap.js";
 
 /**
  * 取得地震報告 - 主要入口點
@@ -41,10 +44,49 @@ function getIntensityGroup(intensityStr) {
 }
 
 /**
+ * 計算地震發生時間距現在的相對時間
+ * @param {string} originTimeStr - 格式 "YYYY-MM-DD HH:MM:SS"
+ * @returns {{ text: string, diffHours: number }}
+ */
+function calcRelativeTime(originTimeStr) {
+  const originMs = new Date(originTimeStr.replace(" ", "T")).getTime();
+  const nowMs = Date.now();
+  const diffMs = nowMs - originMs;
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = diffMs / 3600000;
+
+  let text;
+  if (diffMins < 1) {
+    text = "剛剛";
+  } else if (diffMins < 60) {
+    text = `${diffMins} 分鐘前`;
+  } else if (diffHours < 24) {
+    const h = Math.floor(diffHours);
+    text = `${h} 小時前`;
+  } else {
+    const d = Math.floor(diffHours / 24);
+    text = `${d} 天前`;
+  }
+
+  return { text, diffHours };
+}
+
+/**
+ * 依時間差取得話術分組
+ * @param {number} diffHours
+ * @returns {"緊急" | "普通" | "前陣子"}
+ */
+function getTimeGroup(diffHours) {
+  if (diffHours < 1) return "緊急";
+  if (diffHours < 24) return "普通";
+  return "前陣子";
+}
+
+/**
  * 隨機取一句話術
  */
-function getRandomTalk(group) {
-  const talks = earthquakeTalkMap[group];
+function getRandomTalk(map, group) {
+  const talks = map[group];
   if (!talks || talks.length === 0) return "";
   return talks[Math.floor(Math.random() * talks.length)];
 }
@@ -102,12 +144,21 @@ function buildEarthquakeReport(quake) {
   const maxIntensity = shakingAreas.length > 0 ? findMaxIntensity(shakingAreas) : "-";
   const magEmoji = getMagnitudeEmoji(magnitude);
   const intensityEmoji = getEarthquakeEmoji(maxIntensity);
-  const group = getIntensityGroup(maxIntensity);
-  const talkLine = getRandomTalk(group);
+  const intensityGroup = getIntensityGroup(maxIntensity);
+
+  // 相對時間
+  const { text: relativeTime, diffHours } = originTime !== "-"
+    ? calcRelativeTime(originTime)
+    : { text: "", diffHours: 999 };
+  const timeGroup = getTimeGroup(diffHours);
+
+  const intensityTalk = getRandomTalk(earthquakeTalkMap, intensityGroup);
+  const timeTalk = getRandomTalk(timeTalkMap, timeGroup);
 
   const header = `${intensityEmoji} 最新地震資訊\n━━━━━━━━━━━━━━━━━━━━\n\n`;
+  const timeDisplay = relativeTime ? `${originTime}（${relativeTime}）` : originTime;
   const summary =
-    `🕐 發生時間：${originTime}\n` +
+    `🕐 發生時間：${timeDisplay}\n` +
     `📍 震央位置：${location}\n` +
     `${magEmoji} 規模：M ${magnitude}\n` +
     `📏 深度：${depth} 公里\n` +
@@ -119,7 +170,7 @@ function buildEarthquakeReport(quake) {
   }
 
   const footer = `━━━━━━━━━━━━━━━━━━━━\n💡 資料來源：中央氣象署\n\n`;
-  const talk = talkLine ? `${talkLine}\n` : "";
+  const talk = [timeTalk, intensityTalk].filter(Boolean).map((t) => `${t}\n`).join("");
 
   return header + summary + areaSection + footer + talk;
 }
