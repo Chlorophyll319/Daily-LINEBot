@@ -44,13 +44,13 @@ export class UVBot extends BaseBot {
    */
   async handleUvQuery(userId) {
     const userCity = await this.getUserDefaultCity(userId);
-    const rawData = await getDailyUvIndex();
+    const locations = await getDailyUvIndex();
 
-    if (!rawData) {
+    if (!locations) {
       throw new Error("無法取得紫外線資料");
     }
 
-    return getUvReport(rawData, userCity);
+    return getUvReport(locations, userCity);
   }
 
   /**
