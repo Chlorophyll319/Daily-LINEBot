@@ -18,27 +18,41 @@ export class EarthquakeBot extends BaseBot {
    * 判斷是否能處理該消息
    */
   canHandle(message) {
-    throw new Error("Not implemented");
+    return EARTHQUAKE_COMMANDS.includes(message);
   }
 
   /**
    * 處理消息
    */
   async handle(message, userId) {
-    throw new Error("Not implemented");
+    console.log(`EarthquakeBot processing: ${message} for user: ${userId}`);
+
+    try {
+      return await this.handleEarthquakeQuery();
+    } catch (error) {
+      console.error("EarthquakeBot error:", error.message);
+      return "抱歉，目前無法取得地震資料 (´･ω･`) 請稍後再試！";
+    }
   }
 
   /**
-   * 處理地震查詢
+   * 處理地震查詢 - 取得最新顯著有感地震
    */
   async handleEarthquakeQuery() {
-    throw new Error("Not implemented");
+    const rawData = await getLatestEarthquake();
+
+    if (!rawData) {
+      throw new Error("無法取得地震資料");
+    }
+
+    return getEarthquakeReport(rawData);
   }
 
   /**
    * 獲取幫助信息
    */
   getHelpInfo() {
-    throw new Error("Not implemented");
+    return `地震機器人功能：
+• 地震 / 剛剛有地震嗎 / 是哪裡搖 - 查詢最新顯著有感地震`;
   }
 }
