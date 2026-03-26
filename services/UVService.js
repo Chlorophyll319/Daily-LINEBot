@@ -74,18 +74,20 @@ function getRandomTalk(levelName) {
 
 /**
  * 建構紫外線報告
+ * @returns {string[]} 兩則訊息：[話術, 資料]
  */
 function buildUvReport(uvIndex, levelName, city) {
   const uvEmoji = getUvEmoji(uvIndex);
   const advice = getUvAdvice(uvIndex);
   const talkLine = getRandomTalk(levelName);
 
-  const header = `${uvEmoji} 紫外線指數\n━━━━━━━━━━━━━━━━━━━━\n\n`;
-  const cityInfo = `📍 城市：${city}\n`;
-  const indexInfo = `☀️ UV 指數：${uvIndex}（${levelName}）\n`;
-  const adviceInfo = `🧴 建議：${advice}\n`;
-  const footer = `\n━━━━━━━━━━━━━━━━━━━━\n💡 資料來源：中央氣象署\n\n`;
-  const talk = talkLine ? `${talkLine}\n` : "";
+  const msg1 = talkLine || `${uvEmoji} 幫你查好 ${city} 的紫外線了！`;
 
-  return header + cityInfo + indexInfo + adviceInfo + footer + talk;
+  const msg2 =
+    `${uvEmoji} ${city} 紫外線指數\n\n` +
+    `☀️ UV 指數：${uvIndex}（${levelName}）\n` +
+    `🧴 建議：${advice}\n\n` +
+    `💡 資料來源：中央氣象署`;
+
+  return [msg1, msg2];
 }
