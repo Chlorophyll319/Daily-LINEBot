@@ -3,6 +3,7 @@ import { FortuneBot } from "../bots/FortuneBot.js";
 import { AirQualityBot } from "../bots/AirQualityBot.js";
 import { EarthquakeBot } from "../bots/EarthquakeBot.js";
 import { HolidayBot } from "../bots/HolidayBot.js";
+import { UVBot } from "../bots/UVBot.js";
 
 // 初始化所有 bots
 const bots = [
@@ -11,7 +12,7 @@ const bots = [
   new AirQualityBot(),
   new EarthquakeBot(),
   new HolidayBot(),
-  // TODO: 其他 bots (UVBot) 將在這裡添加
+  new UVBot(),
 ];
 
 /**
