@@ -7,7 +7,7 @@
 - **專案名稱**: onlinever-Daily-LINEBot
 - **主要功能**: 天氣查詢、空氣品質、地震資訊、紫外線指數、放假日查詢、淺草籤詩、智能對話
 - **技術架構**: Node.js + Express + LINE Messaging API + MongoDB
-- **最後更新**: 2026-03-26
+- **最後更新**: 2026-03-26（Quick Reply 升級）
 
 ### 當前 Git 狀態
 
@@ -113,8 +113,10 @@ onlinever-Daily-LINEBot/
 - ✅ **HolidayService 服務** - parseCsvRecords、getTodayWorkReport、getNextHolidayReport
 - ✅ **HolidayAdapter** - 政府行政機關辦公日曆 CSV 封裝（手動 split 解析，不安裝新套件）
 - ✅ **HolidayEmoji** - 依假日類別與工作狀態對應 emoji
-- ✅ **holidayTalkMap** - 5 情境各 3 句呆萌話術（上班日/放假日/補班日/連假前夕/連假中）
+- ✅ **holidayTalkMap** - 6 情境各 3 句呆萌話術（上班日/放假日/補班日/連假前夕/連假中/下次放假）
 - ✅ **34 項單元測試全過** - canHandle、CSV 解析、5 種情境、格式化輸出、錯誤處理均通過
+- ✅ **Bug 修正**（2026-03-26）- DGPA CSV BOM 偵測改用 `headers.includes("是否放假")`，修正全日解析為上班日的問題
+- ✅ **Bug 修正**（2026-03-26）- `buildNextHolidayReport` 話術改用「下次放假」群組，修正上班日查詢顯示「假日快樂！」的問題
 
 **觸發詞**: "今天要上班嗎"、"下次放假"、"放假"、"連假"、"holiday"
 **技術特色**: 無需城市設定、CSV BOM 處理、引號欄位解析、5 種工作情境判斷
@@ -231,7 +233,7 @@ onlinever-Daily-LINEBot/
 - **☀️ 紫外線指數**: 100% 完成
 - **🤖 機器人性格**: 100% 完成（設計規劃完整）
 - **👤 使用者系統**: 100% 完成
-- **📱 LINE 介面**: 60% 完成（天氣選單已完成）
+- **📱 LINE 介面**: 70% 完成（天氣選單 + 幫助 Quick Reply 按鈕）
 
 ### 技術債務狀態
 
@@ -248,7 +250,7 @@ onlinever-Daily-LINEBot/
 - **LINE Rich Menu 配置** - 完整的使用者介面整合
 - **系統監控機制** - 錯誤追蹤與效能監控
 
-#### 本次更新完成 ✅（2026-03-26）
+#### 歷史更新完成 ✅（2026-03-26 前期）
 
 - **EarthquakeBot 完整實作** - Bot + Service + Adapter + Emoji + TalkMap 全套模組
 - **中央氣象署 API 整合** - E-A0015-001 顯著有感地震，公開 API 無需 Key
@@ -262,6 +264,26 @@ onlinever-Daily-LINEBot/
 - **CWA O-A0005-001 API 整合** - 每日紫外線最大值，30 站 StationID → 縣市靜態對應表
 - **多站聚合策略** - 同縣市多站取平均（如高雄 2 站）、CITY_ALIAS fallback、全台平均 fallback
 - **話術風格統一** - 5 等級各 3 句，全部以「窩」自稱呆萌風格
+
+#### 本次更新完成 ✅（2026-03-26 help-quick-reply）
+
+- **幫助 Quick Reply 升級** - 「幫助」回應改為附帶 6 個 Quick Reply 按鈕（天氣/空氣品質/地震/紫外線/放假/運勢）
+- **HelpService 新增** - `services/HelpService.js`：`buildHelpMessage(text)` + `HELP_QUICK_REPLY_ITEMS`
+- **messageRouter 更新** - `generateHelpMessage()` 改回傳物件（含 quickReply）
+- **13 項單元測試全過** - 訊息格式、label 長度限制、6 個 Bot 觸發詞完整性均通過
+- **測試框架建立** - `npm test` 使用 Node.js 內建 `node:test`，無需安裝新套件
+
+#### 上次更新完成 ✅（2026-03-26 chat-ux）
+
+- **chat-ux 改造** - 6 個 Service 全部改為回傳 `string[]`，分多則對話框呈現（話術 → 資料 → 話術）
+- **WeatherService** - `[話術, 天氣資料]`
+- **AirQualityService** - `[話術, 空氣資料]`
+- **EarthquakeService** - `[時間話術, 地震資料, 震度話術]`
+- **HolidayService** - `[話術, 日曆資料]`
+- **UVService** - `[話術, UV 資料]`
+- **FortuneFormatter** - `[開場話術, 籤詩+解釋, 運勢+收尾]`
+- **HolidayBot Bug 修正 1** - DGPA CSV `isDgpaFormat` 偵測改用 `headers.includes("是否放假")`，修正 BOM 造成全日解析為「否」的問題
+- **HolidayBot Bug 修正 2** - `buildNextHolidayReport` 話術改用新增的「下次放假」群組，修正上班日查詢出現「假日快樂！」的語意錯誤
 
 ## 🚀 部署資訊
 
@@ -315,6 +337,6 @@ onlinever-Daily-LINEBot/
 ---
 
 _最後更新: 2026-03-26_
-_專案狀態: 全部 6 個 Bot（天氣/空氣品質/地震/放假日/紫外線/淺草籤詩）實作完成，架構框架完善_
+_專案狀態: 全部 6 個 Bot 實作完成，chat-ux 多則訊息改造完成，幫助 Quick Reply 升級完成_
 _下階段目標: LINE Rich Menu 整合、推播通知、LLM NLU_
-_開發重點: 所有核心 Bot 功能完整，可進入 UI 優化與進階功能階段_
+_開發重點: 幫助訊息已支援 Quick Reply 快速操作，可繼續進行 Rich Menu 整合_

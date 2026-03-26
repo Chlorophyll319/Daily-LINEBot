@@ -4,6 +4,7 @@ import { AirQualityBot } from "../bots/AirQualityBot.js";
 import { EarthquakeBot } from "../bots/EarthquakeBot.js";
 import { HolidayBot } from "../bots/HolidayBot.js";
 import { UVBot } from "../bots/UVBot.js";
+import { buildHelpMessage } from "../services/HelpService.js";
 
 // 初始化所有 bots
 const bots = [
@@ -57,17 +58,16 @@ export async function handleMessage(event) {
 }
 
 /**
- * 生成整合所有 bots 的幫助信息
+ * 生成整合所有 bots 的幫助信息（附帶 Quick Reply 按鈕）
  */
 function generateHelpMessage() {
-  let helpMessage = "🤖 機器人指令說明：\n\n";
+  let helpText = "🤖 機器人指令說明：\n\n";
 
   bots.forEach((bot) => {
-    helpMessage += bot.getHelpInfo() + "\n\n";
+    helpText += bot.getHelpInfo() + "\n\n";
   });
 
-  helpMessage += "📋 輸入「幫助」或「help」查看此說明\n";
-  helpMessage += "✨ 享受服務吧！";
+  helpText += "👆 點選下方按鈕快速查詢！";
 
-  return helpMessage;
+  return buildHelpMessage(helpText);
 }
