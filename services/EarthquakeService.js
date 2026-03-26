@@ -133,6 +133,7 @@ function formatAffectedAreas(shakingAreas) {
 
 /**
  * 建構地震報告文字
+ * @returns {string[]} 三則訊息：[時間話術, 地震資料, 震度話術]
  */
 function buildEarthquakeReport(quake) {
   const info = quake.EarthquakeInfo;
@@ -155,22 +156,25 @@ function buildEarthquakeReport(quake) {
   const intensityTalk = getRandomTalk(earthquakeTalkMap, intensityGroup);
   const timeTalk = getRandomTalk(timeTalkMap, timeGroup);
 
-  const header = `${intensityEmoji} 最新地震資訊\n━━━━━━━━━━━━━━━━━━━━\n\n`;
+  // 第1則：時間話術
+  const msg1 = timeTalk || `${intensityEmoji} 偵測到地震資訊！`;
+
+  // 第2則：地震資料
   const timeDisplay = relativeTime ? `${originTime}（${relativeTime}）` : originTime;
-  const summary =
+  let msg2 =
+    `${intensityEmoji} 最新地震資訊\n\n` +
     `🕐 發生時間：${timeDisplay}\n` +
     `📍 震央位置：${location}\n` +
     `${magEmoji} 規模：M ${magnitude}\n` +
     `📏 深度：${depth} 公里\n` +
-    `${intensityEmoji} 最大震度：${maxIntensity}\n\n`;
-
-  let areaSection = "";
+    `${intensityEmoji} 最大震度：${maxIntensity}`;
   if (shakingAreas.length > 0) {
-    areaSection = `各地震度：\n${formatAffectedAreas(shakingAreas)}\n\n`;
+    msg2 += `\n\n各地震度：\n${formatAffectedAreas(shakingAreas)}`;
   }
+  msg2 += `\n\n💡 資料來源：中央氣象署`;
 
-  const footer = `━━━━━━━━━━━━━━━━━━━━\n💡 資料來源：中央氣象署\n\n`;
-  const talk = [timeTalk, intensityTalk].filter(Boolean).map((t) => `${t}\n`).join("");
+  // 第3則：震度話術
+  const msg3 = intensityTalk || "";
 
-  return header + summary + areaSection + footer + talk;
+  return msg3 ? [msg1, msg2, msg3] : [msg1, msg2];
 }
