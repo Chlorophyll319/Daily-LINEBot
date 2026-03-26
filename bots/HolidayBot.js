@@ -1,9 +1,16 @@
 import { BaseBot } from "./BaseBot.js";
-// import { getOfficialCalendar } from "../data/miniBotPhrases/holiday/HolidayAdapter.js";
-// import { getHolidayReport } from "../services/HolidayService.js";
+import { getOfficialCalendar } from "../data/miniBotPhrases/holiday/HolidayAdapter.js";
+import {
+  parseCsvRecords,
+  getTodayWorkReport,
+  getNextHolidayReport,
+} from "../services/HolidayService.js";
 
 // 放假日查詢指令
 const HOLIDAY_COMMANDS = ["今天要上班嗎", "下次放假", "放假", "連假", "holiday"];
+
+// 查詢「今天是否上班」的指令
+const TODAY_COMMANDS = ["今天要上班嗎"];
 
 /**
  * 放假日機器人 - 處理辦公日曆查詢
@@ -37,10 +44,17 @@ export class HolidayBot extends BaseBot {
 
   /**
    * 處理放假日查詢
-   * TODO: 根據 message 區分「今天要上班嗎」vs「下次放假」
+   * - "今天要上班嗎" → 今日上班狀況
+   * - 其他（放假/連假/下次放假/holiday）→ 下次放假資訊
    */
   async handleHolidayQuery(message) {
-    // TODO: implement
+    const csvText = await getOfficialCalendar();
+    const records = parseCsvRecords(csvText);
+
+    if (TODAY_COMMANDS.includes(message)) {
+      return getTodayWorkReport(records);
+    }
+    return getNextHolidayReport(records);
   }
 
   /**

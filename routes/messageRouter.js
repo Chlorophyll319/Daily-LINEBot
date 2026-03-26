@@ -2,6 +2,7 @@ import { WeatherBot } from "../bots/WeatherBot.js";
 import { FortuneBot } from "../bots/FortuneBot.js";
 import { AirQualityBot } from "../bots/AirQualityBot.js";
 import { EarthquakeBot } from "../bots/EarthquakeBot.js";
+import { HolidayBot } from "../bots/HolidayBot.js";
 
 // 初始化所有 bots
 const bots = [
@@ -9,7 +10,8 @@ const bots = [
   new FortuneBot(),
   new AirQualityBot(),
   new EarthquakeBot(),
-  // TODO: 其他 bots (HolidayBot, UVBot) 將在這裡添加
+  new HolidayBot(),
+  // TODO: 其他 bots (UVBot) 將在這裡添加
 ];
 
 /**
