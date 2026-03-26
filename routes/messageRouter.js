@@ -4,7 +4,12 @@ import { AirQualityBot } from "../bots/AirQualityBot.js";
 import { EarthquakeBot } from "../bots/EarthquakeBot.js";
 import { HolidayBot } from "../bots/HolidayBot.js";
 import { UVBot } from "../bots/UVBot.js";
-import { buildHelpMessage } from "../services/HelpService.js";
+import {
+  buildMainMenuMessage,
+  buildWeatherSubMenu,
+  buildFortuneSubMenu,
+  buildHolidaySubMenu,
+} from "../services/HelpService.js";
 
 // 初始化所有 bots
 const bots = [
@@ -15,6 +20,13 @@ const bots = [
   new HolidayBot(),
   new UVBot(),
 ];
+
+// 子選單觸發詞對應處理器
+const SUBMENU_HANDLERS = {
+  天氣選單: buildWeatherSubMenu,
+  算命選單: buildFortuneSubMenu,
+  放假選單: buildHolidaySubMenu,
+};
 
 /**
  * 消息路由處理器 - 使用 bot 架構分發消息
@@ -28,10 +40,15 @@ export async function handleMessage(event) {
 
     console.log(`Message from ${userId}: ${userMessage}`);
 
-    // 特殊指令：幫助
+    // 特殊指令：幫助 → 主選單 Flex Message
     if (userMessage === "幫助" || userMessage === "help") {
-      const helpMessage = generateHelpMessage();
-      event.reply(helpMessage);
+      event.reply(buildMainMenuMessage());
+      return;
+    }
+
+    // 子選單觸發詞 → Quick Reply 細項
+    if (SUBMENU_HANDLERS[userMessage]) {
+      event.reply(SUBMENU_HANDLERS[userMessage]());
       return;
     }
 
@@ -55,19 +72,4 @@ export async function handleMessage(event) {
     console.error("Message handling error:", error.message);
     event.reply("抱歉，系統出現了一點小問題 (´･ω･`) 請稍後再試！");
   }
-}
-
-/**
- * 生成整合所有 bots 的幫助信息（附帶 Quick Reply 按鈕）
- */
-function generateHelpMessage() {
-  let helpText = "🤖 機器人指令說明：\n\n";
-
-  bots.forEach((bot) => {
-    helpText += bot.getHelpInfo() + "\n\n";
-  });
-
-  helpText += "👆 點選下方按鈕快速查詢！";
-
-  return buildHelpMessage(helpText);
 }

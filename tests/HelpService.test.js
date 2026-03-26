@@ -1,67 +1,119 @@
 import { test, describe } from "node:test";
 import assert from "node:assert/strict";
 import {
-  buildHelpMessage,
-  HELP_QUICK_REPLY_ITEMS,
+  buildMainMenuMessage,
+  buildWeatherSubMenu,
+  buildFortuneSubMenu,
+  buildHolidaySubMenu,
+  SUBMENU_TRIGGERS,
 } from "../services/HelpService.js";
 
 describe("HelpService", () => {
-  describe("buildHelpMessage(text)", () => {
+  describe("buildMainMenuMessage()", () => {
     test("回傳物件而非字串", () => {
-      const result = buildHelpMessage("測試訊息");
+      const result = buildMainMenuMessage();
       assert.strictEqual(typeof result, "object");
     });
 
-    test("訊息 type 為 text", () => {
-      const result = buildHelpMessage("測試訊息");
+    test("type 為 flex", () => {
+      const result = buildMainMenuMessage();
+      assert.strictEqual(result.type, "flex");
+    });
+
+    test("包含 altText", () => {
+      const result = buildMainMenuMessage();
+      assert.ok(
+        typeof result.altText === "string" && result.altText.length > 0,
+        "應有 altText"
+      );
+    });
+
+    test("contents 為 bubble", () => {
+      const result = buildMainMenuMessage();
+      assert.strictEqual(result.contents.type, "bubble");
+    });
+
+    test("body 包含 6 個按鈕", () => {
+      const result = buildMainMenuMessage();
+      const buttons = result.contents.body.contents;
+      assert.strictEqual(buttons.length, 6, "應有 6 個功能按鈕");
+    });
+
+    test("有細項的分類（天氣/算命/放假）按鈕送出子選單觸發詞", () => {
+      const result = buildMainMenuMessage();
+      const buttons = result.contents.body.contents;
+      const subMenuTexts = buttons
+        .filter((b) => SUBMENU_TRIGGERS.includes(b.action?.text))
+        .map((b) => b.action.text);
+      assert.deepStrictEqual(
+        subMenuTexts.sort(),
+        ["天氣選單", "算命選單", "放假選單"].sort()
+      );
+    });
+
+    test("單一功能按鈕送出正確指令", () => {
+      const result = buildMainMenuMessage();
+      const buttons = result.contents.body.contents;
+      const directTexts = buttons
+        .filter((b) => !SUBMENU_TRIGGERS.includes(b.action?.text))
+        .map((b) => b.action.text);
+      assert.deepStrictEqual(
+        directTexts.sort(),
+        ["空氣品質", "地震", "紫外線"].sort()
+      );
+    });
+  });
+
+  describe("buildWeatherSubMenu()", () => {
+    test("type 為 text", () => {
+      const result = buildWeatherSubMenu();
       assert.strictEqual(result.type, "text");
     });
 
-    test("訊息 text 與傳入內容相同", () => {
-      const text = "🤖 測試幫助訊息";
-      const result = buildHelpMessage(text);
-      assert.strictEqual(result.text, text);
+    test("包含 quickReply", () => {
+      const result = buildWeatherSubMenu();
+      assert.ok(result.quickReply, "應有 quickReply");
+      assert.ok(Array.isArray(result.quickReply.items));
     });
 
-    test("包含 quickReply 欄位", () => {
-      const result = buildHelpMessage("測試");
-      assert.ok(result.quickReply, "應有 quickReply 欄位");
-      assert.ok(
-        Array.isArray(result.quickReply.items),
-        "quickReply.items 應為陣列"
-      );
+    test("包含「一週天氣」與「設定城市」", () => {
+      const result = buildWeatherSubMenu();
+      const texts = result.quickReply.items.map((i) => i.action.text);
+      assert.ok(texts.includes("一週天氣"), "缺少一週天氣");
+      assert.ok(texts.includes("設定城市"), "缺少設定城市");
+    });
+  });
+
+  describe("buildFortuneSubMenu()", () => {
+    test("type 為 text", () => {
+      const result = buildFortuneSubMenu();
+      assert.strictEqual(result.type, "text");
     });
 
-    test("quickReply items 數量與 HELP_QUICK_REPLY_ITEMS 一致", () => {
-      const result = buildHelpMessage("測試");
-      assert.strictEqual(
-        result.quickReply.items.length,
-        HELP_QUICK_REPLY_ITEMS.length
-      );
+    test("包含 7 個選項", () => {
+      const result = buildFortuneSubMenu();
+      assert.strictEqual(result.quickReply.items.length, 7);
     });
 
-    test("每個 item 符合 LINE Quick Reply action 格式", () => {
-      const result = buildHelpMessage("測試");
-      for (const item of result.quickReply.items) {
-        assert.strictEqual(item.type, "action", "item.type 應為 action");
-        assert.strictEqual(
-          item.action.type,
-          "message",
-          "action.type 應為 message"
-        );
-        assert.ok(
-          typeof item.action.label === "string" && item.action.label.length > 0,
-          "label 應為非空字串"
-        );
-        assert.ok(
-          typeof item.action.text === "string" && item.action.text.length > 0,
-          "text 應為非空字串"
-        );
+    test("包含所有算命細項", () => {
+      const result = buildFortuneSubMenu();
+      const texts = result.quickReply.items.map((i) => i.action.text);
+      const expected = [
+        "抽籤（隨機）",
+        "愛情運勢",
+        "事業運勢",
+        "學業運勢",
+        "健康運勢",
+        "財運",
+        "旅行運勢",
+      ];
+      for (const t of expected) {
+        assert.ok(texts.includes(t), `缺少「${t}」`);
       }
     });
 
-    test("每個 label 不超過 LINE 限制的 20 字元", () => {
-      const result = buildHelpMessage("測試");
+    test("每個 label 不超過 20 字元", () => {
+      const result = buildFortuneSubMenu();
       for (const item of result.quickReply.items) {
         assert.ok(
           item.action.label.length <= 20,
@@ -71,31 +123,48 @@ describe("HelpService", () => {
     });
   });
 
-  describe("HELP_QUICK_REPLY_ITEMS 涵蓋所有 Bot 觸發詞", () => {
-    const texts = HELP_QUICK_REPLY_ITEMS.map((i) => i.text);
-
-    test('包含 WeatherBot 觸發詞「天氣」', () => {
-      assert.ok(texts.includes("天氣"), '缺少觸發詞「天氣」');
+  describe("buildHolidaySubMenu()", () => {
+    test("type 為 text", () => {
+      const result = buildHolidaySubMenu();
+      assert.strictEqual(result.type, "text");
     });
 
-    test('包含 AirQualityBot 觸發詞「空氣品質」', () => {
-      assert.ok(texts.includes("空氣品質"), '缺少觸發詞「空氣品質」');
+    test("包含「今天要上班嗎」與「下次放假」", () => {
+      const result = buildHolidaySubMenu();
+      const texts = result.quickReply.items.map((i) => i.action.text);
+      assert.ok(texts.includes("今天要上班嗎"), "缺少今天要上班嗎");
+      assert.ok(texts.includes("下次放假"), "缺少下次放假");
     });
+  });
 
-    test('包含 EarthquakeBot 觸發詞「地震」', () => {
-      assert.ok(texts.includes("地震"), '缺少觸發詞「地震」');
+  describe("SUBMENU_TRIGGERS", () => {
+    test("包含三個子選單觸發詞", () => {
+      assert.deepStrictEqual(
+        SUBMENU_TRIGGERS.sort(),
+        ["天氣選單", "算命選單", "放假選單"].sort()
+      );
     });
+  });
 
-    test('包含 UVBot 觸發詞「紫外線」', () => {
-      assert.ok(texts.includes("紫外線"), '缺少觸發詞「紫外線」');
-    });
+  describe("Quick Reply item 格式", () => {
+    const subMenus = [buildWeatherSubMenu, buildFortuneSubMenu, buildHolidaySubMenu];
 
-    test('包含 HolidayBot 觸發詞「放假」', () => {
-      assert.ok(texts.includes("放假"), '缺少觸發詞「放假」');
-    });
-
-    test('包含 FortuneBot 觸發詞「運勢」', () => {
-      assert.ok(texts.includes("運勢"), '缺少觸發詞「運勢」');
-    });
+    for (const builder of subMenus) {
+      test(`${builder.name} 的每個 item 符合 LINE Quick Reply action 格式`, () => {
+        const result = builder();
+        for (const item of result.quickReply.items) {
+          assert.strictEqual(item.type, "action");
+          assert.strictEqual(item.action.type, "message");
+          assert.ok(
+            typeof item.action.label === "string" && item.action.label.length > 0,
+            "label 應為非空字串"
+          );
+          assert.ok(
+            typeof item.action.text === "string" && item.action.text.length > 0,
+            "text 應為非空字串"
+          );
+        }
+      });
+    }
   });
 });

@@ -14,6 +14,7 @@ const FORTUNE_KEYWORDS = Object.freeze([
   "祈福",
   "卜卦",
   "問籤",
+  "財運",
 ]);
 
 const QUESTION_CATEGORIES = Object.freeze({
