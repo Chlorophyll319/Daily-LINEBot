@@ -5,6 +5,7 @@ import { EarthquakeBot } from "../bots/EarthquakeBot.js";
 import { HolidayBot } from "../bots/HolidayBot.js";
 import { UVBot } from "../bots/UVBot.js";
 import { KnockKnockBot } from "../bots/KnockKnockBot.js";
+import { DivineBot } from "../bots/DivineBot.js";
 import {
   buildMainMenuMessage,
   buildWeatherSubMenu,
@@ -21,6 +22,7 @@ const bots = [
   new HolidayBot(),
   new UVBot(),
   new KnockKnockBot(),
+  new DivineBot(),
 ];
 
 // 子選單觸發詞對應處理器
