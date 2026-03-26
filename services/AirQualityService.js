@@ -86,6 +86,7 @@ function formatStationItem(station) {
 
 /**
  * 建構空氣品質報告
+ * @returns {string[]} 兩則訊息：[話術, 資料]
  */
 function buildAirQualityReport(stations, cityName) {
   const avgAqi = calcAverageAqi(stations);
@@ -95,11 +96,15 @@ function buildAirQualityReport(stations, cityName) {
   const talkLine = getRandomTalk(levelName);
   const updateTime = worstStation.publishtime?.slice(0, 16) || "-";
 
-  const header = `${emoji} ${cityName} 空氣品質報告\n━━━━━━━━━━━━━━━━━━━━\n\n`;
-  const summary = `📊 平均 AQI：${avgAqi ?? "-"}　等級：${levelName}\n\n`;
-  const stationList = stations.map(formatStationItem).join("\n") + "\n\n";
-  const footer = `━━━━━━━━━━━━━━━━━━━━\n🕐 更新時間：${updateTime}\n💡 資料來源：環境部\n\n`;
-  const talk = talkLine ? `${talkLine}\n` : "";
+  const msg1 = talkLine || `${emoji} 幫你查好 ${cityName} 的空氣品質了！`;
 
-  return header + summary + stationList + footer + talk;
+  const stationList = stations.map(formatStationItem).join("\n");
+  const msg2 =
+    `${emoji} ${cityName} 空氣品質\n\n` +
+    `📊 平均 AQI：${avgAqi ?? "-"}　等級：${levelName}\n\n` +
+    stationList + "\n\n" +
+    `🕐 更新時間：${updateTime}\n` +
+    `💡 資料來源：環境部`;
+
+  return [msg1, msg2];
 }
