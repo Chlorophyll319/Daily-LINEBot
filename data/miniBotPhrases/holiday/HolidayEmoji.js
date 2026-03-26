@@ -4,11 +4,18 @@
 
 /**
  * 依 holidaycategory 取得 emoji
- * @param {string} category - 假日類別（例如：「星期六」「星期日」「放假之紀念日及節日」「補假」「調整放假」...）
+ * @param {string} category - 假日類別
  * @returns {string} emoji
  */
 export function getHolidayCategoryEmoji(category) {
-  // TODO: implement
+  if (!category) return "📅";
+  if (category.includes("紀念日") || category.includes("節日")) return "🎉";
+  if (category.includes("補假")) return "🎁";
+  if (category.includes("調整放假")) return "🗓️";
+  if (category.includes("調整上班")) return "💼";
+  if (category.includes("彈性")) return "✨";
+  if (category.includes("星期六") || category.includes("星期日")) return "🌅";
+  return "📅";
 }
 
 /**
@@ -17,5 +24,5 @@ export function getHolidayCategoryEmoji(category) {
  * @returns {string} emoji
  */
 export function getWorkStatusEmoji(isholiday) {
-  // TODO: implement
+  return isholiday === "是" ? "🏖️" : "💼";
 }
