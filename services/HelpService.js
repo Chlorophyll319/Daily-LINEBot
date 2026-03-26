@@ -98,6 +98,7 @@ export function buildFortuneSubMenu() {
     quickReply: {
       items: [
         makeQuickReplyItem("抽籤（隨機）", "抽籤（隨機）"),
+        makeQuickReplyItem("擲杯問神", "擲杯"),
         makeQuickReplyItem("愛情運勢", "愛情運勢"),
         makeQuickReplyItem("事業運勢", "事業運勢"),
         makeQuickReplyItem("學業運勢", "學業運勢"),
