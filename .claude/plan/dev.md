@@ -28,12 +28,14 @@ bots/
   AirQualityBot.js               # 空氣品質 AQI 查詢（按用戶城市）
   EarthquakeBot.js               # 地震查詢（最新顯著有感地震）
   HolidayBot.js                  # 放假日查詢（今日上班/下次放假）
+  UVBot.js                       # 紫外線指數查詢（按用戶城市）
 services/
   WeatherService.js              # 格式化中央氣象局原始資料為人可讀文字
   WeatherError.js                # 統一天氣錯誤處理
   AirQualityService.js           # 多測站 AQI 聚合、格式化報告
   EarthquakeService.js           # 地震資料解析、震度排序去重、格式化報告
   HolidayService.js              # CSV 解析、今日上班判斷（5 情境）、下次放假查詢
+  UVService.js                   # 縣市測站聚合平均 UV 指數、格式化報告
 database/
   mongoDB.js                     # 連線管理、getUserData()、saveUserData()
   user.js                        # Mongoose Schema：{ userId, city }
@@ -43,6 +45,7 @@ data/miniBotPhrases/
   airQuality/                    # AQI 模組：Adapter、Emoji、TalkMap
   earthquake/                    # 地震模組：Adapter、Emoji、TalkMap
   holiday/                       # 放假日模組：Adapter（CSV）、Emoji、TalkMap（5 情境）
+  uv/                            # 紫外線模組：Adapter、Emoji、TalkMap、stationCountyMap（30 站）
 ```
 
 ---
@@ -86,15 +89,10 @@ data/miniBotPhrases/
 | AirQualityBot | 即時 AQI 查詢（環境部 API）、多測站聚合平均、按用戶城市查詢、6 等級話術 |
 | EarthquakeBot | 最新顯著有感地震（CWA E-A0015-001）、震度排序去重、受影響縣市前 5、6 震度分組話術 |
 | HolidayBot | 今日上班/放假查詢（政府辦公日曆 CSV）、下次放假資訊、5 情境話術（上班日/放假日/補班日/連假前夕/連假中） |
+| UVBot | 當日紫外線最大值（CWA O-A0005-001）、按用戶城市查詢、多站平均、5 等級話術 |
 | MongoDB 整合 | 使用者城市偏好、抽籤歷史儲存 |
 | 小機器人性格 | 天氣代碼全部轉為小機器人風格（42 個描述）、對潮濕天氣表達恐懼 |
 | 籤詩 Note | 100 支籤全部補充小機器人 / 正式機器人雙風格 note |
-
-### 待實作 ⚠️
-
-優先順序：UVBot
-
-每個 Bot 需要：繼承 BaseBot、建對應 service、建 `data/miniBotPhrases/xxx/` 模組。
 
 ### 規劃中 📋
 
