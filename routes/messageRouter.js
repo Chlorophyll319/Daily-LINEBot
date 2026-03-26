@@ -6,6 +6,7 @@ import { HolidayBot } from "../bots/HolidayBot.js";
 import { UVBot } from "../bots/UVBot.js";
 import { KnockKnockBot } from "../bots/KnockKnockBot.js";
 import { DivineBot } from "../bots/DivineBot.js";
+import { FallbackBot } from "../bots/FallbackBot.js";
 import {
   buildMainMenuMessage,
   buildWeatherSubMenu,
@@ -23,6 +24,7 @@ const bots = [
   new UVBot(),
   new KnockKnockBot(),
   new DivineBot(),
+  new FallbackBot(),
 ];
 
 // 子選單觸發詞對應處理器
@@ -63,12 +65,6 @@ export async function handleMessage(event) {
       console.log(`Routing to ${bot.name}`);
       const response = await bot.handle(userMessage, userId);
       event.reply(response);
-    } else {
-      // 沒有 bot 能處理
-      console.log("No bot can handle this message");
-      event.reply(
-        "不太懂您的意思 (´･ω･`) \n試試看輸入「幫助」查看可用指令，或直接輸入「一週天氣」查看天氣預報！"
-      );
     }
 
     console.log("Message processing completed.");
