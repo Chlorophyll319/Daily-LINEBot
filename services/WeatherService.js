@@ -87,13 +87,18 @@ function findValidCityData(locations, requestedCity) {
 
 /**
  * 建構天氣報告 - 純字符串組裝，無業務邏輯
+ * @returns {string[]} 兩則訊息：[開場, 天氣資料]
  */
 function buildWeatherReport(cityData, days) {
-  const header = `🌤️ ${cityData.cityName} ${days}天天氣預報\n━━━━━━━━━━━━━━━━━━━━\n\n`;
-  const footer = `━━━━━━━━━━━━━━━━━━━━\n🌈 資料來源：中央氣象局\n💡 提醒：出門前請留意天氣變化！`;
   const body = formatWeatherItems(cityData, days);
 
-  return header + body + footer;
+  const msg1 = `幫你查好啦～這是 ${cityData.cityName} 最新 ${days} 天天氣 👇`;
+  const msg2 =
+    `🌤️ ${cityData.cityName} ${days} 天天氣預報\n\n` +
+    body +
+    `🌈 資料來源：中央氣象局\n💡 出門前請留意天氣變化！`;
+
+  return [msg1, msg2];
 }
 
 /**

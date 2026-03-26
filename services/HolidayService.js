@@ -172,6 +172,7 @@ function formatDate(dateStr) {
 
 /**
  * 建構今日上班狀況報告
+ * @returns {string[]} 兩則訊息：[話術, 資料]
  */
 function buildTodayReport(record, situation) {
   const isHoliday = record.isholiday === "是";
@@ -179,18 +180,22 @@ function buildTodayReport(record, situation) {
   const catEmoji = getHolidayCategoryEmoji(record.holidaycategory);
   const talkLine = getRandomTalk(situation);
 
-  const header = `${statusEmoji} 今天上班狀況\n━━━━━━━━━━━━━━━━━━━━\n\n`;
-  const dateInfo = `📅 日期：${formatDate(record.date)}\n`;
-  const statusInfo = `${statusEmoji} 狀態：${isHoliday ? "放假" : "上班"}\n`;
-  const nameInfo = record.name ? `${catEmoji} 今日：${record.name}\n` : "";
-  const footer = `\n━━━━━━━━━━━━━━━━━━━━\n💡 資料來源：政府行政機關辦公日曆表\n\n`;
-  const talk = talkLine ? `${talkLine}\n` : "";
+  const msg1 = talkLine || `${statusEmoji} 幫你查好今天的上班狀況了！`;
 
-  return header + dateInfo + statusInfo + nameInfo + footer + talk;
+  const nameInfo = record.name ? `${catEmoji} 今日：${record.name}\n` : "";
+  const msg2 =
+    `${statusEmoji} 今天上班狀況\n\n` +
+    `📅 日期：${formatDate(record.date)}\n` +
+    `${statusEmoji} 狀態：${isHoliday ? "放假" : "上班"}\n` +
+    nameInfo +
+    `\n💡 資料來源：政府行政機關辦公日曆表`;
+
+  return [msg1, msg2];
 }
 
 /**
  * 建構下次放假報告
+ * @returns {string[]} 兩則訊息：[話術+倒數, 假期詳細]
  */
 function buildNextHolidayReport(records, nextIdx, consecutive, daysAway) {
   const firstRecord = records[nextIdx];
@@ -198,9 +203,9 @@ function buildNextHolidayReport(records, nextIdx, consecutive, daysAway) {
   const isLongWeekend = consecutive >= 3;
   const talkLine = getRandomTalk(isLongWeekend ? "連假前夕" : "放假日");
 
-  const statusEmoji = getWorkStatusEmoji("是");
-  const header = `${statusEmoji} 下次放假資訊\n━━━━━━━━━━━━━━━━━━━━\n\n`;
-  const daysInfo = `⏰ 再 ${daysAway} 天就放假了！\n`;
+  const msg1 = talkLine
+    ? `${talkLine}\n⏰ 再 ${daysAway} 天就放假了！`
+    : `⏰ 再 ${daysAway} 天就放假了！`;
 
   let holidayInfo;
   if (consecutive === 1) {
@@ -221,8 +226,11 @@ function buildNextHolidayReport(records, nextIdx, consecutive, daysAway) {
     if (names.length > 0) holidayInfo += `🎉 包含：${names.join("、")}\n`;
   }
 
-  const footer = `\n━━━━━━━━━━━━━━━━━━━━\n💡 資料來源：政府行政機關辦公日曆表\n\n`;
-  const talk = talkLine ? `${talkLine}\n` : "";
+  const statusEmoji = getWorkStatusEmoji("是");
+  const msg2 =
+    `${statusEmoji} 下次放假資訊\n\n` +
+    holidayInfo +
+    `\n💡 資料來源：政府行政機關辦公日曆表`;
 
-  return header + daysInfo + holidayInfo + footer + talk;
+  return [msg1, msg2];
 }
