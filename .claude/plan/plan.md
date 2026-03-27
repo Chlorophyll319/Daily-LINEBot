@@ -250,6 +250,13 @@ onlinever-Daily-LINEBot/
 - **LINE Rich Menu 配置** - 完整的使用者介面整合
 - **系統監控機制** - 錯誤追蹤與效能監控
 
+#### 本次更新完成 ✅（2026-03-27 security）
+
+- **LINE Webhook 簽名驗證確認** - linebot 套件內建 HMAC-SHA256 驗證（`verify: true` 預設），`listen()` 中對每個 POST 請求驗證 `x-line-signature`，不符回 400
+- **Rate Limiting** - 新增 `services/RateLimiter.js`，每 userId 每分鐘最多 10 則（記憶體 Map，固定窗口），超限回「窩被你搞累了，休息一下 😮‍💨」
+- **messageRouter 更新** - `handleMessage` 前段加入 `checkRateLimit(userId)` 檢查
+- **10 項單元測試全過** - 簽名驗證 5 項（正確/錯誤/空/竄改/預設值）+ rate limit 5 項（前10則/第11則/獨立userId/窗口重置/計數正確）
+
 #### 歷史更新完成 ✅（2026-03-26 前期）
 
 - **EarthquakeBot 完整實作** - Bot + Service + Adapter + Emoji + TalkMap 全套模組
@@ -336,7 +343,7 @@ onlinever-Daily-LINEBot/
 
 ---
 
-_最後更新: 2026-03-26_
-_專案狀態: 全部 6 個 Bot 實作完成，chat-ux 多則訊息改造完成，幫助 Quick Reply 升級完成_
+_最後更新: 2026-03-27_
+_專案狀態: 安全性功能加入（Webhook 簽名驗證確認 + Rate Limiting），10 項測試全過_
 _下階段目標: LINE Rich Menu 整合、推播通知、LLM NLU_
-_開發重點: 幫助訊息已支援 Quick Reply 快速操作，可繼續進行 Rich Menu 整合_
+_開發重點: 安全層就緒，可進行 Rich Menu 整合_
