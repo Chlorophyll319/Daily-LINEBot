@@ -13,6 +13,7 @@ import {
   buildFortuneSubMenu,
   buildHolidaySubMenu,
 } from "../services/HelpService.js";
+import { checkRateLimit } from "../services/RateLimiter.js";
 
 // 初始化所有 bots
 const bots = [
@@ -45,6 +46,12 @@ export async function handleMessage(event) {
     const userId = event.source.userId;
 
     console.log(`Message from ${userId}: ${userMessage}`);
+
+    // Rate limiting：每 userId 每分鐘最多 10 則
+    if (!checkRateLimit(userId)) {
+      event.reply("窩被你搞累了，休息一下 😮‍💨");
+      return;
+    }
 
     // 特殊指令：幫助 → 主選單 Flex Message
     if (userMessage === "幫助" || userMessage === "help") {
