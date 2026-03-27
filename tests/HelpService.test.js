@@ -90,9 +90,9 @@ describe("HelpService", () => {
       assert.strictEqual(result.type, "text");
     });
 
-    test("包含 7 個選項", () => {
+    test("包含 8 個選項", () => {
       const result = buildFortuneSubMenu();
-      assert.strictEqual(result.quickReply.items.length, 7);
+      assert.strictEqual(result.quickReply.items.length, 8);
     });
 
     test("包含所有算命細項", () => {
@@ -100,6 +100,7 @@ describe("HelpService", () => {
       const texts = result.quickReply.items.map((i) => i.action.text);
       const expected = [
         "抽籤（隨機）",
+        "擲杯",
         "愛情運勢",
         "事業運勢",
         "學業運勢",
